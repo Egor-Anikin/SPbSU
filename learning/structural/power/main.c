@@ -2,8 +2,12 @@
 
 int main ()
 {
-    int nuber, degree;
+    int number=0, degree=0, result=1;
     printf("Ведите чило, и степень в которую его нужно возвести");
-    scanf();
+    scanf("%d\n",&number);
+    scanf("%d\n",&degree);
+    for (int i=0; i<degree;i++)
+        result *= number ;
+    printf("Результат : %d \n",result);
     return 0;
 }
