@@ -1,13 +1,20 @@
 #include <stdio.h>
 
-int main ()
+int main()
 {
-    int number=0, degree=0, result=1;
-    printf("Ведите чило, и степень в которую его нужно возвести");
-    scanf("%d\n",&number);
-    scanf("%d\n",&degree);
-    for (int i=0; i<degree;i++)
-        result *= number ;
-    printf("Результат : %d \n",result);
+    int number = 0;
+    int degree = 0;
+    int result = 1;
+
+    printf("Введите чило, и степень в которую его нужно возвести");
+    scanf("%d\n", &number);
+    scanf("%d\n", &degree);
+
+    for (int i = 0; i < degree; i++)
+    {
+        result *= number;
+    } 
+
+    printf("Результат : %d \n", &result);
     return 0;
 }
