@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void quantity (int number)
+void quantity(int number)
 {
     int *series = malloc(sizeof(int) * number);
     int lenght = 1;
@@ -13,9 +13,9 @@ void quantity (int number)
     {
         flag = 0;
 
-        for (int i = 0; i < lenght; i++ )
+        for(int i = 0; i < lenght; i++)
         {
-            if (x % series[i] == 0)
+            if(x % series[i] == 0)
             {
                 flag = 1;
                 break;
@@ -24,13 +24,13 @@ void quantity (int number)
 
         if(flag == 0)
         {
-            series [lenght] = x;
+            series[lenght] = x;
             lenght++; 
         }
 
     }
 
-    for (int i = 0; i < lenght; i++)
+    for(int i = 0; i < lenght; i++)
     {
         printf("%d; ", series[i]);
     }
@@ -46,9 +46,9 @@ int main()
     scanf("%d", &number);
     printf("Простые меньше ведённого:\n");
 
-    if (number >= 2)
+    if(number >= 2)
     {
-        quantity ( number);
+        quantity(number);
     }
 
     return 0;
