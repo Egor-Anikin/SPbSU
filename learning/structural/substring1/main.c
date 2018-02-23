@@ -1,27 +1,19 @@
 #include <stdio.h>
+#include <string.h>
 
-#define lenght_text 100
-#define lenght_key 20
+#define LENGHT_TEXT 100
+#define LENGHT_KEY 20
 
-int main()
+int find (char text[], char key[], int lenght)
 {
-    char text[lenght_text];
-    char key[lenght_key];
-    int number = -1;
-    int flag = 1;
-   
+   int flag = 1;
 
-    printf("Введите строку, и подстроку\n");
-    scanf("%s", &text);
-    scanf("%s", &key);
-
-    for(int i = 0; i < lenght_text - lenght_key; i++)
+    for(int i = 0; i < LENGHT_TEXT - lenght; i++)
     {
         flag = 1;
-
-        for(int j = 0; i < lenght_key; j++)
+        for(int j = 0; j < lenght; j++)
         {
-            if(text[i+j] != key[j]);
+            if(text[i + j] != key[j])
             {
                 flag = 0;
                 break;
@@ -29,20 +21,39 @@ int main()
 
         }
 
-        if(flag = 1)
+        if(flag == 1)
         {
-            number = i;
+            return i;
         }
     } 
+    return -1;
+}
+
+int main()
+{
+    char text[LENGHT_TEXT] = {0};
+    char key[LENGHT_KEY] = {0};
+    int number = -1;
+    int lenght = 0;
+
+    printf("Введите строку, и подстроку\n");
+    scanf("%s", &text);
+    scanf("%s", &key);
+
+    lenght = strlen (key);
+
+    number = find (text, key, lenght);
 
     if(number >= 0)
     {
         number++;
-        printf("Подсрока (%s) начинается с %d-го символа\n",key, number);
+        printf("Подсрока (%s) начинается с %d-го символа\n", key, number);
     }
     else
     {
         printf("Подсрока не найдена\n");
     }
+
+
     return 0;
 }
