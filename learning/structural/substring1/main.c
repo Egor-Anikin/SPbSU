@@ -4,7 +4,7 @@
 #define LENGHT_TEXT 100
 #define LENGHT_KEY 20
 
-int find (char text[], char key[], int lenght)
+int find(char text[], char key[], int lenght)
 {
    int flag = 1;
 
@@ -40,9 +40,9 @@ int main()
     scanf("%s", &text);
     scanf("%s", &key);
 
-    lenght = strlen (key);
+    lenght = strlen(key);
 
-    number = find (text, key, lenght);
+    number = find(text, key, lenght);
 
     if(number >= 0)
     {
