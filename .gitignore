@@ -1,3 +1,13 @@
 *.o
 *.exe
 *.out
+*.jar
+*.class
+
+**/target/
+**/out/**/*.fxml
+**/.idea/**/*.xml
+output.txt
+
+!misc.xml
+!modules.xml
