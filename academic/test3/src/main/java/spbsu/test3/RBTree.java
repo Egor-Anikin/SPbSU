@@ -1,5 +1,6 @@
 package spbsu.test3;
 
+/** Realise Red-Black Tree. */
 public class RBTree<T extends Comparable, E> {
     private Element hade;
 
@@ -8,6 +9,12 @@ public class RBTree<T extends Comparable, E> {
         hade = null;
     }
 
+    /**
+     * Add element to Red-Black Tree.
+     *
+     * @param key Key.
+     * @param info Information.
+     * */
     public void add(T key, E info) {
         Element node = find(key);
 
@@ -25,9 +32,14 @@ public class RBTree<T extends Comparable, E> {
             node = node.left;
         }
 
-        addBalans(node);
+        addBalance(node);
     }
 
+    /**
+     * Remove element from Red-Black Tree.
+     *
+     * @param key Key.
+     * */
     public void remove(T key) {
         Element node = find(key);
         Element next;
@@ -50,7 +62,7 @@ public class RBTree<T extends Comparable, E> {
         }
         next = child(node);
         if (next == null) {
-            removeBalans(node);
+            removeBalance(node);
         }
         if (next != null) {
             node.key = next.key;
@@ -64,13 +76,16 @@ public class RBTree<T extends Comparable, E> {
         }
     }
 
-    public void see(T key) {
+    /**
+     * Remove element from Red-Black Tree.
+     *
+     * @param key Key.
+     *
+     * @return Return element information.
+     * */
+    public E show(T key) {
         Element node = find(key);
-        if (node == null || !node.key.equals(key)) {
-            System.out.println("Элемент не найден");
-        } else {
-            System.out.println("info = " + node.info);
-        }
+        return node == null || !node.key.equals(key) ? null : node.info;
     }
 
 
@@ -155,19 +170,17 @@ public class RBTree<T extends Comparable, E> {
         }
     }
 
-    private void addBalans(Element node) {
+    private void addBalance(Element node) {
         Element uncle = uncle(node);
         Element grad = grandfather(node);
 
         if (node.parent == null) {
             node.red = false;
-        } else if (!isRed(node.parent)) {
-            return;
-        } else if (uncle != null && isRed(uncle)) {
+        } else if (isRed(uncle)) {
             node.parent.red = false;
             uncle.red = false;
             grad.red = true;
-            addBalans(grad);
+            addBalance(grad);
         } else {
             if (node.equals(node.parent.right) && node.parent.equals(grad.left)) {
                 rotateLeft(node.parent);
@@ -188,7 +201,7 @@ public class RBTree<T extends Comparable, E> {
         }
     }
 
-    private void removeBalans(Element node) {
+    private void removeBalance(Element node) {
         if (isRed(node) || node.parent == null) {
             return;
         }
@@ -205,7 +218,7 @@ public class RBTree<T extends Comparable, E> {
         bro = brother(node);
         if (!isRed(node.parent) && !isRed(bro) && !isRed(bro.right) && !isRed(bro.left)) {
             bro.red = true;
-            removeBalans(node.parent);
+            removeBalance(node.parent);
         } else if (isRed(node.parent) && !isRed(bro) && !isRed(bro.right) && !isRed(bro.left)) {
             node.parent.red = false;
             bro.red = true;
@@ -236,7 +249,7 @@ public class RBTree<T extends Comparable, E> {
         return node != null && node.red;
     }
 
-    private class Element<T extends Comparable, E> implements Comparable {
+    private class Element implements Comparable {
         public E info;
         public T key;
         public boolean red;
@@ -244,7 +257,13 @@ public class RBTree<T extends Comparable, E> {
         public Element right;
         public Element left;
 
-
+        /**
+         * Add element to Red-Black Tree.
+         *
+         * @param info Information.
+         * @param key Key.
+         * @param parent Parent element.
+         * */
         public Element(E info, T key, Element parent) {
             this.info = info;
             this.key = key;

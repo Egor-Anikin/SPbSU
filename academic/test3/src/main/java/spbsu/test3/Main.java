@@ -1,12 +1,13 @@
 package spbsu.test3;
 
+/** Main class. */
 public class Main {
-    /** Main function */
+    /** Main function. */
     public static void main(String[] args) {
-        RBTree Tree = new RBTree();
+        RBTree<Integer, String> Tree = new RBTree<>();
 
         Tree.add(6, "asdfghj");
-        Tree.see(6);
+        System.out.println("info :" + Tree.show(6));
         Tree.remove(6);
     }
 }
