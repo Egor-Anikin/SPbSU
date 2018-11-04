@@ -69,9 +69,9 @@ public class RBTree<T extends Comparable, E> {
             node.info = next.info;
             node.right = next.right;
             node.left = next.left;
-        } else if (node.parent.left.equals(node)) {
+        } else if (node.equals(node.parent.left)) {
             node.parent.left = null;
-        } else if (node.parent.right.equals(node)) {
+        } else if (node.equals(node.parent.right)) {
             node.parent.right = null;
         }
     }
@@ -105,49 +105,49 @@ public class RBTree<T extends Comparable, E> {
     }
 
     private Element brother(Element node) {
-        return node.parent.left.equals(node) ? node.parent.right : node.parent.left;
+        return node.equals(node.parent.left) ? node.parent.right : node.parent.left;
     }
 
-    private void rotateLeft(Element n) { //    p                      p
-        Element node = n.right;     //        n                   t
-        node.parent = n.parent;     //     C    t               n     B
-        if (n.parent != null)       //        A     B       C      A
+    private void rotateLeft(Element elem) { //    p                      p
+        Element node = elem.right;     //        n                   t
+        node.parent = elem.parent;     //     C    t               n     B
+        if (elem.parent != null)       //        A     B       C      A
         {
-            if (n.parent.left.equals(n)) {
-                n.parent.left = node;
+            if (elem.equals(elem.parent.left)) {
+                elem.parent.left = node;
             } else {
-                n.parent.right = node;
+
+                elem.parent.right = node;
             }
         }
 
-        n.right = node.left;
+        elem.right = node.left;
         if (node.left != null) {
-            node.left.parent = n;
+            node.left.parent = elem;
         }
 
-        n.parent = node;
-        node.left = n;
+        elem.parent = node;
+        node.left = elem;
     }
 
-    private void rotateRight(Element n) { //    p               p
-        Element node = n.left;     //        n               t
-        node.parent = n.parent;     //     t    C         A    n
-        if (n.parent != null)       //  A     B              B    C
-        {
-            if (n.parent.left.equals(n)) {
-                n.parent.left = node;
+    private void rotateRight(Element elem) { //    p               p
+        Element node = elem.left;     //        n               t
+        node.parent = elem.parent;     //     t    C         A    n
+        if (elem.parent != null) {       //  A     B              B    C
+            if (elem.equals(elem.parent.left)) {
+                elem.parent.left = node;
             } else {
-                n.parent.right = node;
+                elem.parent.right = node;
             }
         }
 
-        n.left = node.right;
+        elem.left = node.right;
         if (node.right != null) {
-            node.right.parent = n;
+            node.right.parent = elem;
         }
 
-        n.parent = node;
-        node.right = n;
+        elem.parent = node;
+        node.right = elem;
     }
 
     private Element find(T key) {
@@ -160,7 +160,7 @@ public class RBTree<T extends Comparable, E> {
                 if (node.key.compareTo(key) < 0 && node.right != null) {
                     node = node.right;
                 } else if (node.key.compareTo(key) > 0 && node.left != null) {
-                    node = node.right;
+                    node = node.left;
                 } else {
                     break;
                 }
@@ -176,6 +176,9 @@ public class RBTree<T extends Comparable, E> {
 
         if (node.parent == null) {
             node.red = false;
+        }else if(!isRed(node.parent))
+        {
+            return;
         } else if (isRed(uncle)) {
             node.parent.red = false;
             uncle.red = false;
@@ -209,7 +212,7 @@ public class RBTree<T extends Comparable, E> {
         if (isRed(bro)) {
             node.parent.red = true;
             bro.red = false;
-            if (node.parent.left.equals(node)) {
+            if (node.equals(node.parent.left)) {
                 rotateLeft(node.parent);
             } else {
                 rotateRight(node.parent);
@@ -223,18 +226,18 @@ public class RBTree<T extends Comparable, E> {
             node.parent.red = false;
             bro.red = true;
         } else if (!isRed(bro)) {
-            if (node.parent.left.equals(node) && isRed(bro.left) && !isRed(bro.right)) {
+            if (node.equals(node.parent.left) && isRed(bro.left) && !isRed(bro.right)) {
                 bro.red = true;
                 bro.left.red = false;
                 rotateRight(bro);
-            } else if (node.parent.right.equals(node) && isRed(bro.right) && !isRed(bro.left)) {
+            } else if (node.equals(node.parent.right) && isRed(bro.right) && !isRed(bro.left)) {
                 bro.red = true;
                 bro.right.red = false;
                 rotateLeft(bro);
             }
 
             bro = brother(node);
-            if (node.parent.left.equals(node)) {
+            if (node.equals(node.parent.left)) {
                 bro.right.red = false;
                 rotateLeft(node.parent);
             } else {
@@ -279,4 +282,3 @@ public class RBTree<T extends Comparable, E> {
         }
     }
 }
-
