@@ -60,9 +60,11 @@ public class RBTreeTest {
         tree.add("ab", "test");
         tree.add("a", "test");
         tree.add("bca", "test");
+
         assertEquals("Not found element", "test", tree.show("ab"));
         assertEquals("Not found element", "test", tree.show("a"));
         assertEquals("Not found element", "test", tree.show("bca"));
+        
         tree.remove("ab");
         tree.remove("a");
         tree.remove("bca");
