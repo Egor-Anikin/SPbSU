@@ -1,4 +1,4 @@
-package spbsu.test2;
+package spbsu.task2;
 
 /** Sorting Algorithms interface. */
 public interface QuickSort <T extends  Comparable> {

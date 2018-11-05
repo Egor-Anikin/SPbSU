@@ -1,4 +1,4 @@
-package spbsu.test2;
+package spbsu.task2;
 
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
@@ -66,4 +66,3 @@ public class ParallelQuickSort <T extends  Comparable> implements QuickSort<T> {
 
     }
 }
-

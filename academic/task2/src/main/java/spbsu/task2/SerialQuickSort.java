@@ -1,4 +1,4 @@
-package spbsu.test2;
+package spbsu.task2;
 
 public class SerialQuickSort<T extends  Comparable> implements QuickSort<T> {
     @Override

@@ -1,9 +1,8 @@
-package spbsu.test2;
-
+package spbsu.task2;
 
 import java.util.Random;
 
-public class main {
+public class Main {
     public static void main(String[] args) {
         final int ARRAYLENGHT = 1000000;
         final int SIZE = 16;
