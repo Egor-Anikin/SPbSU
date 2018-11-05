@@ -1,4 +1,4 @@
-package spbsu.test3;
+package spbsu.task3;
 
 import static org.junit.Assert.*;
 
@@ -64,7 +64,7 @@ public class RBTreeTest {
         assertEquals("Not found element", "test", tree.show("ab"));
         assertEquals("Not found element", "test", tree.show("a"));
         assertEquals("Not found element", "test", tree.show("bca"));
-        
+
         tree.remove("ab");
         tree.remove("a");
         tree.remove("bca");
@@ -95,4 +95,3 @@ public class RBTreeTest {
     }
 
 }
-

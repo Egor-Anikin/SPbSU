@@ -1,4 +1,4 @@
-package spbsu.test3;
+package spbsu.task3;
 
 /** Realise Red-Black Tree. */
 public class RBTree<T extends Comparable, E> {

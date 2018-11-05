@@ -1,4 +1,4 @@
-package spbsu.test3;
+package spbsu.task3;
 
 /** Main class. */
 public class Main {
