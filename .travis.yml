@@ -1,0 +1,14 @@
+notifications:
+    email: false
+
+git:
+    depth: 1
+
+language: java
+jdk: openjdk11
+
+install:
+    - sudo apt-get install maven
+
+script:
+    - ./travis.sh
