@@ -2,12 +2,7 @@ package spbsu.task3;
 
 /** Realise Red-Black Tree. */
 public class RBTree<T extends Comparable, E> {
-    private Element hade;
-
-
-    public RBTree() {
-        hade = null;
-    }
+    private Element head;
 
     /**
      * Add element to Red-Black Tree.
@@ -19,12 +14,12 @@ public class RBTree<T extends Comparable, E> {
         Element node = find(key);
 
         if (node == null) {
-            hade = new Element(info, key, null);
-            hade.red = false;
+            head = new Element(info, key, null);
+            head.red = false;
             return;
         } else if (node.key.equals(key)) {
             return;
-        } else if (node.key.compareTo(key)<0) {
+        } else if (node.key.compareTo(key) < 0) {
             node.right = new Element(info, key, node);
             node = node.right;
         } else {
@@ -48,7 +43,7 @@ public class RBTree<T extends Comparable, E> {
             return;
         }
         if (node.parent == null) {
-            hade = null;
+            head = null;
             return;
         }
         if (node.right != null && node.left != null) {
@@ -77,7 +72,7 @@ public class RBTree<T extends Comparable, E> {
     }
 
     /**
-     * Remove element from Red-Black Tree.
+     * Show a Red-Black Tree element.
      *
      * @param key Key.
      *
@@ -111,12 +106,10 @@ public class RBTree<T extends Comparable, E> {
     private void rotateLeft(Element elem) { //    p                      p
         Element node = elem.right;     //        n                   t
         node.parent = elem.parent;     //     C    t               n     B
-        if (elem.parent != null)       //        A     B       C      A
-        {
+        if (elem.parent != null) {       //        A     B       C      A
             if (elem.equals(elem.parent.left)) {
                 elem.parent.left = node;
             } else {
-
                 elem.parent.right = node;
             }
         }
@@ -151,10 +144,10 @@ public class RBTree<T extends Comparable, E> {
     }
 
     private Element find(T key) {
-        if (hade == null) {
+        if (head == null) {
             return null;
         } else {
-            Element node = hade;
+            Element node = head;
 
             while (node.left != null || node.right != null) {
                 if (node.key.compareTo(key) < 0 && node.right != null) {
@@ -176,8 +169,7 @@ public class RBTree<T extends Comparable, E> {
 
         if (node.parent == null) {
             node.red = false;
-        }else if(!isRed(node.parent))
-        {
+        }else if(!isRed(node.parent)) {
             return;
         } else if (isRed(uncle)) {
             node.parent.red = false;

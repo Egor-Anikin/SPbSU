@@ -26,7 +26,7 @@ public class RBTreeTest {
         tree.add(8, "test");
         tree.add(4, "test");
 
-        for (int i=1; i < 10; i++) {
+        for (int i = 1; i < 10; i++) {
             assertEquals("Add isn't work!", "test", tree.show(i));
         }
 
@@ -55,7 +55,7 @@ public class RBTreeTest {
 
     /** String as key. */
     @Test
-    public void strigTest() {
+    public void stringTest() {
         RBTree<String, String> tree = new RBTree<>();
         tree.add("ab", "test");
         tree.add("a", "test");
