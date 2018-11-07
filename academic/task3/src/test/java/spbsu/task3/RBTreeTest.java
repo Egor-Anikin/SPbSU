@@ -40,7 +40,7 @@ public class RBTreeTest {
         tree.remove(1);
         tree.remove(5);
 
-        for (int i=1; i < 10; i++) {
+        for (int i = 1; i < 10; i++) {
             assertEquals("Remove isn't work!", null, tree.show(i));
         }
     }
@@ -49,7 +49,7 @@ public class RBTreeTest {
     @Test
     public void nullTest() {
         RBTree<Integer, String> tree = new RBTree<>();
-        assertEquals("Find nonexisten element", null, tree.show(6));
+        assertEquals("Find non existent element", null, tree.show(6));
         tree.remove(6);
     }
 
