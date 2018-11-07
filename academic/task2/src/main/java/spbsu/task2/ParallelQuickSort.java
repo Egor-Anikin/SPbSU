@@ -45,7 +45,7 @@ public class ParallelQuickSort <T extends  Comparable> implements QuickSort<T> {
                     i++;
                 }
 
-                while (i <= j && array[j].compareTo(middle)> 0) {
+                while (i <= j && array[j].compareTo(middle) > 0) {
                     j--;
                 }
 

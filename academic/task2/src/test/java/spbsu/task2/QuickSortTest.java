@@ -6,7 +6,7 @@ import java.util.Random;
 
 /** Sorting test class. */
 public class QuickSortTest {
-    private final int ARRAYLENGHT = 100000;
+    private final int ARRAYLENGHT = 1000000;
     private final int SIZE = 20;
 
     /** Creation test of serial and parallel realization class. */
@@ -23,7 +23,7 @@ public class QuickSortTest {
         QuickSort<Integer> parallel = new ParallelQuickSort<Integer>();
         parallel.sort(array);
         for (int i = 0; i < array.length - 1; i++) {
-            assertTrue("Parallel sort doesn't work",array[i] < array[i + 1]);
+            assertTrue("Parallel sort doesn't work",array[i].compareTo(array[i+1]) <= 0);
         }
     }
 
@@ -49,7 +49,7 @@ public class QuickSortTest {
             serialTime += serialTime(array.clone())/SIZE;
             parallelTime += parallelTime(array)/SIZE;
         }
-        assertTrue("Parallel slower sequential", parallelTime > serialTime );
+        assertTrue("Parallel slower sequential", parallelTime < serialTime );
     }
 
     /** Stability test. */
@@ -64,7 +64,7 @@ public class QuickSortTest {
                 serialTime += serialTime(array.clone()) / SIZE;
                 parallelTime += parallelTime(array) / SIZE;
             }
-            assertTrue("Parallel sometimes slower sequential", parallelTime > serialTime);
+            assertTrue("Parallel sometimes slower sequential", parallelTime < serialTime);
         }
     }
 
