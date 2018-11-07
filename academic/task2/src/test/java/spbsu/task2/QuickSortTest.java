@@ -6,8 +6,8 @@ import java.util.Random;
 
 /** Sorting test class. */
 public class QuickSortTest {
-    private final int ARRAY_LENGHT = 1000000;
-    private final int SIZE = 20;
+    private final int ARRAY_LENGHT = 100000;
+    private final int SIZE = 10;
 
     /** Creation test of serial and parallel realization class. */
     @Test
