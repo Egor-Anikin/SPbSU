@@ -4,16 +4,16 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        final int ARRAYLENGHT = 1000000;
+        final int ARRAY_LENGHT = 1000000;
         final int SIZE = 16;
 
         float parallelTime = 0;
         float serialTime = 0;
 
         for (int i = 0; i < SIZE; i++) {
-            Integer[] array = randGenerator(ARRAYLENGHT);
-            serialTime += serialTime(array.clone())/SIZE;
-            parallelTime += parallelTime(array)/SIZE;
+            Integer[] array = randGenerator(ARRAY_LENGHT);
+            serialTime += serialTime(array.clone()) / SIZE;
+            parallelTime += parallelTime(array) / SIZE;
         }
 
         System.out.println("serialTime = " + serialTime);

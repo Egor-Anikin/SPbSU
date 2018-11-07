@@ -6,7 +6,7 @@ import java.util.Random;
 
 /** Sorting test class. */
 public class QuickSortTest {
-    private final int ARRAYLENGHT = 1000000;
+    private final int ARRAY_LENGHT = 1000000;
     private final int SIZE = 20;
 
     /** Creation test of serial and parallel realization class. */
@@ -19,22 +19,23 @@ public class QuickSortTest {
     /** Parallel sorting test. */
     @Test
     public void parallelSortTest() {
-        Integer[] array = randGenerator(ARRAYLENGHT);
+        Integer[] array = randGenerator(ARRAY_LENGHT);
+
         QuickSort<Integer> parallel = new ParallelQuickSort<Integer>();
         parallel.sort(array);
         for (int i = 0; i < array.length - 1; i++) {
-            assertTrue("Parallel sort doesn't work",array[i].compareTo(array[i+1]) <= 0);
+            assertTrue("Parallel sort doesn't work",array[i].compareTo(array[i + 1]) <= 0);
         }
     }
 
     /** Serial sorting test. */
     @Test
     public void serialSortTest() {
-        Integer[] array = randGenerator(ARRAYLENGHT);
+        Integer[] array = randGenerator(ARRAY_LENGHT);
         QuickSort<Integer> serial = new SerialQuickSort<Integer>();
         serial.sort(array);
         for (int i = 0; i < array.length - 1; i++) {
-            assertTrue("Serial sort doesn't work",array[i].compareTo(array[i+1]) <= 0);
+            assertTrue("Serial sort doesn't work",array[i].compareTo(array[i + 1]) <= 0);
         }
     }
 
@@ -45,26 +46,37 @@ public class QuickSortTest {
         float serialTime = 0;
 
         for (int i = 0; i < SIZE; i++) {
-            Integer[] array = randGenerator(ARRAYLENGHT);
-            serialTime += serialTime(array.clone())/SIZE;
-            parallelTime += parallelTime(array)/SIZE;
+            Integer[] array = randGenerator(ARRAY_LENGHT);
+            serialTime += serialTime(array.clone()) / SIZE;
+            parallelTime += parallelTime(array) / SIZE;
         }
         assertTrue("Parallel slower sequential", parallelTime < serialTime );
     }
 
-    /** Stability test. */
+    /** Sorting empty array. */
     @Test
-    public void stabilityTest() {
-        for (int j = 0; j < SIZE; j++) {
-            float parallelTime = 0;
-            float serialTime = 0;
+    public void  nullTest() {
+        QuickSort<Integer> serial = new SerialQuickSort<Integer>();
+        QuickSort<Integer> parallel = new ParallelQuickSort<Integer>();
+        Integer[]array = {};
+        serial.sort(array);
+        parallel.sort(array);
+    }
 
-            for (int i = 0; i < SIZE; i++) {
-                Integer[] array = randGenerator(ARRAYLENGHT);
-                serialTime += serialTime(array.clone()) / SIZE;
-                parallelTime += parallelTime(array) / SIZE;
-            }
-            assertTrue("Parallel sometimes slower sequential", parallelTime < serialTime);
+    /** String sorting test. */
+    @Test
+    public void stringSortTest() {
+        String[] array1 = {"abc", "a", "bcd", "efg"};
+        String[] array2 = array1.clone();
+
+        QuickSort<String> serial = new SerialQuickSort<String>();
+        QuickSort<String> parallel = new ParallelQuickSort<String>();
+
+        serial.sort(array1);
+        parallel.sort(array2);
+        for (int i = 0; i < array1.length - 1; i++) {
+            assertTrue("Serial sort doesn't work",array1[i].compareTo(array1[i + 1]) <= 0);
+            assertTrue("Parallel sort doesn't work",array2[i].compareTo(array2[i + 1]) <= 0);
         }
     }
 
