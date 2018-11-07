@@ -12,8 +12,8 @@ public class Main {
 
         for (int i = 0; i < SIZE; i++) {
             Integer[] array = randGenerator(ARRAYLENGHT);
-            serialTime += serialTime(array.clone());
-            parallelTime += parallelTime(array);
+            serialTime += serialTime(array.clone())/SIZE;
+            parallelTime += parallelTime(array)/SIZE;
         }
 
         System.out.println("serialTime = " + serialTime);

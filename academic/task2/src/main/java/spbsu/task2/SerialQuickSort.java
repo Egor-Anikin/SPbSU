@@ -1,5 +1,6 @@
 package spbsu.task2;
 
+/** Serial quick sort. */
 public class SerialQuickSort<T extends  Comparable> implements QuickSort<T> {
     @Override
     public void sort(T[] array) {
@@ -7,7 +8,7 @@ public class SerialQuickSort<T extends  Comparable> implements QuickSort<T> {
     }
 
     public void qSort(T[] array, int left, int right) {
-        if (right - left <= 1) {
+        if (right <= left) {
             return;
         }
 
@@ -16,16 +17,16 @@ public class SerialQuickSort<T extends  Comparable> implements QuickSort<T> {
         T middle = array[(i + j) / 2];
 
         while (i <= j) {
-            while (i < j && array[i].compareTo(middle) < 0) {
+            while (i <= j && array[i].compareTo(middle) < 0) {
                 i++;
             }
 
-            while (i < j && array[j].compareTo(middle) > 0) {
+            while (i <= j && array[j].compareTo(middle) > 0) {
                 j--;
             }
 
             if (i <= j && array[j].compareTo(array[i]) <= 0) {
-                swop(array, i, j);
+                swap(array, i, j);
                 i++;
                 j--;
             }
@@ -35,9 +36,9 @@ public class SerialQuickSort<T extends  Comparable> implements QuickSort<T> {
         qSort(array, left, j);
     }
 
-    private void swop(T[] array, int i, int j) {
-        T swop = array[i];
+    private void swap(T[] array, int i, int j) {
+        T swap = array[i];
         array[i] = array[j];
-        array[j] = swop;
+        array[j] = swap;
     }
 }
