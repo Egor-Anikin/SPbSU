@@ -1,13 +1,13 @@
 package spbsu.task2;
 
 /** Serial quick sort. */
-public class SerialQuickSort<T extends  Comparable> implements QuickSort<T> {
+public class SerialQuickSort<T extends Comparable> implements Sort<T> {
     @Override
     public void sort(T[] array) {
         qSort(array, 0, array.length - 1);
     }
 
-    public void qSort(T[] array, int left, int right) {
+    private void qSort(T[] array, int left, int right) {
         if (right <= left) {
             return;
         }

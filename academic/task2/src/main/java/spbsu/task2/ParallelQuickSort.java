@@ -4,7 +4,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
 /** Parallel quick sort. */
-public class ParallelQuickSort <T extends  Comparable> implements QuickSort<T> {
+public class ParallelQuickSort<T extends Comparable> implements Sort<T> {
 
     @Override
     public void sort(T[] array) {
@@ -12,27 +12,26 @@ public class ParallelQuickSort <T extends  Comparable> implements QuickSort<T> {
         new ForkJoinPool().invoke(first);
     }
 
-    private class Parallel<T extends  Comparable> extends RecursiveAction{
-        int right;
-        int left;
-        T[] array;
+    private class Parallel<T extends Comparable> extends RecursiveAction {
+       private int right;
+       private int left;
+       private T[] array;
 
-        protected Parallel (T [] array, int left, int right) {
+        protected Parallel (T[] array, int left, int right) {
             this.array = array;
             this.left = left;
             this.right = right;
         }
 
-        private  void swap(T[] array, int i, int j)
-        {
+        private  void swap(T[] array, int i, int j) {
             T swap = array[i];
             array[i] = array[j];
             array[j] = swap;
         }
 
         @Override
-        protected void compute(){
-            if(right <= left){
+        protected void compute() {
+            if (right <= left) {
                 return;
             }
 
@@ -56,8 +55,8 @@ public class ParallelQuickSort <T extends  Comparable> implements QuickSort<T> {
                 }
             }
 
-            Parallel<T> cRight = new Parallel<T> (array,i,right);
-            Parallel<T> cLeft = new Parallel<T>(array,left,j);
+            Parallel<T> cRight = new Parallel<T>(array, i, right);
+            Parallel<T> cLeft = new Parallel<T>(array, left, j);
 
             cRight.fork();
             cLeft.compute();
