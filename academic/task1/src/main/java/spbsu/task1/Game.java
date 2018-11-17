@@ -21,6 +21,12 @@ public class Game extends Application {
     private static final int SCREEN_WIDTH = (int) Screen.getPrimary().getVisualBounds().getWidth();
     private static final int SCREEN_HEIGHT = (int) Screen.getPrimary().getVisualBounds().getHeight();
 
+    private static final int CHECK_UPDATES = 10;
+
+    private Converter converter = new Converter();
+    private int wait = 0;
+    private boolean faire = true;
+
     /** Start The Game. */
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -76,8 +82,10 @@ public class Game extends Application {
     private void gameMechanics(final Stage primaryStage, GraphicsContext gc, final LinkedList<String> keys) {
         final Map map = new Map(gc);
         final Cannon red = new Cannon(gc, 680, 0);
+        red.setY(map.GroundY(red.getX()));
         final Cannon blue = new Cannon(gc, 680, 0);
-        map.putOnTheGround(turret);
+        blue.setY(map.GroundY(blue.getX()));
+        //map.putOnTheGround(turret);
         final LinkedList<Bullet> bullets = new LinkedList<>();
 
         new AnimationTimer() {
@@ -85,12 +93,12 @@ public class Game extends Application {
 
                 if (keys.contains("LEFT")) {
                     red.setX(red.getX() - 1);
-                    map.getGroundY(red);
+                    red.setY(map.GroundY(red.getX()));
                 }
 
                 if (keys.contains("RIGHT")) {
                     red.setX(red.getX() + 1);
-                    map.getGroundY(red);
+                    red.setY(map.GroundY(red.getX()));
                 }
 
                 if (keys.contains("UP")) {
@@ -102,8 +110,31 @@ public class Game extends Application {
                 }
 
                 if (keys.contains("ENTER")) {
-                    bullets.add(red.fire());
-                    keys.remove("ENTER");
+                    if(faire || wait <= 0) {
+                        faire = false;
+                        bullets.add(red.fireBig());
+                        //int info = converter.getInfo(red.getX(),red.getFi(),2);
+                        //info = (network.synchronization(info));
+                        //converter.ConvertInfo(info, map);
+                        converter.setCannon(blue);
+                        bullets.add(converter.getBullet(gc));
+                        wait = CHECK_UPDATES;
+                        keys.remove("ENTER");
+                    }
+                }
+
+                if (keys.contains("SPASE")) {
+                    if(faire || wait <= 0) {
+                        faire = false;
+                        //bullets.add(red.fireSmall());
+                        //int info = converter.getInfo(red.getX(), red.getFi(), 1);
+                        //info = (network.synchronization(info));
+                        //converter.ConvertInfo(info, map);
+                        converter.setCannon(blue);
+                        bullets.add(converter.getBullet(gc));
+                        wait = CHECK_UPDATES;
+                        keys.remove("SPASE");
+                    }
                 }
 
                 if (keys.contains("ESCAPE")) {
@@ -114,7 +145,7 @@ public class Game extends Application {
                 red.draw();
 
                 for (Bullet bullet : bullets) {
-                    if (map.checkGroundY(bullet) || bullet.isRemuv()) {
+                    if (bullet.getY() <= map.GroundY(bullet.getX()) || bullet.isRemuv()) {
                         bullets.remove(bullet);
                     } else if (checkHit(bullet,red)) {
                         primaryStage.close();
@@ -126,6 +157,15 @@ public class Game extends Application {
                         bullet.draw();
                     }
                 }
+
+                if (wait == 0) {
+                    //int info = converter.getInfo(red.getX(),red.getFi(),0);
+                    //info = (network.synchronization(info));
+                   // converter.ConvertInfo(info, map);
+                    converter.setCannon(blue);
+                    wait = CHECK_UPDATES;
+                }
+                wait--;
             }
         }.start();
     }

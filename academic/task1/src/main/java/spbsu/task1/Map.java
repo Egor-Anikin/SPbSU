@@ -20,16 +20,16 @@ public class Map {
         gc.drawImage(background, 0, 0);
     }
 
-    public boolean checkGroundY(Coordinates object) {
-        return object.getY() <= GroundY(object.getX());
-    }
+    public int GroundY(int x){
+        int[] X = {0, 205, 405, 700, 830, 990, 1260, 1360};
+        int[] Y = {412, 480, 380, 490, 445, 480, 395, 415};
 
-    public void getGroundY(Coordinates object){
-        object.setY(GroundY(object.getX()));
-    }
+        for(int i = 0; i < 8; i++) {
+            if (x < X[i])
+                return Y[i - 1] + (Y[i] - Y[i - 1]) * (x - X[i - 1]) / (X[i] - X[i - 1]);
+        }
 
-    private static int GroundY(int x){
-        return 10;
+        return 0;
     }
 
 }

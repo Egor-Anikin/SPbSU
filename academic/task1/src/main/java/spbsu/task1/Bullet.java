@@ -1,42 +1,49 @@
 package spbsu.task1;
 
-public class Bullet implements Coordinates{
-    private static final int MAX_WIDTH = 1360;
-    private static final int MAX_HEIGHT = 765;
-    private static final int BULLET_SIZE = 20;
-    private static final int MASS_BULLET = 82;
-    private static final int FORCE_CANNON = 100;
-    private static final float GRAVITATION = 10;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
-    private final GraphicsContext gc;
-    private final Image bullet;
+public abstract class Bullet implements Coordinates{
+    protected static final int MAX_WIDTH = 1360;
+    protected static final int MAX_HEIGHT = 765;
+    protected static int BULLET_SIZE = 20;
+    protected static final int FORCE_CANNON = 100;
+    protected static int MASS_BULLET = 80;
+    protected static final float GRAVITATION = 10;
 
-    private boolean remuv = false;
-    private double x;
-    private double y;
-    private double vx;
-    private double vy;
+    protected GraphicsContext gc;
+    protected Image bullet;
 
-    public Bullet(GraphicsContext gc, int x, int y, int fi) {
+    protected boolean remuv = false;
+    protected double x;
+    protected double y;
+    protected double vx;
+    protected double vy;
+
+    /*public Bullet(GraphicsContext gc, int x, int y, int fi) {
         this.gc = gc;
         this.x = x;
         this.y = y;
 
+        begin(fi);
+    }*/
+
+    protected void begin(int fi) {
         int v0 = FORCE_CANNON/MASS_BULLET;
         vx = v0 * Math.cos(Math.PI * fi / 180);
         vy = v0 * Math.sin(Math.PI * fi / 180);
-
-        bullet = new Image("bullet.png");
     }
 
     @Override
     public int getX() {
         return (int) x;
     }
+
     @Override
     public int getY() {
         return (int)y;
     }
+
     @Override
     public void setX(int x) {
         if(x > 0 && x < MAX_WIDTH )
