@@ -4,14 +4,14 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        final int ARRAY_LENGHT = 1000000;
+        final int ARRAY_LENGTH = 1000000;
         final int SIZE = 16;
 
         float parallelTime = 0;
         float serialTime = 0;
 
         for (int i = 0; i < SIZE; i++) {
-            Integer[] array = randomGenerator(ARRAY_LENGHT);
+            Integer[] array = randomGenerator(ARRAY_LENGTH);
             serialTime += serialTime(array.clone()) / SIZE;
             parallelTime += parallelTime(array) / SIZE;
         }
