@@ -82,10 +82,10 @@ public class Game extends Application {
 
     private void gameMechanics(final Stage primaryStage, GraphicsContext gc, final LinkedList<String> keys) {
         final Map map = new Map(gc);
-        final Cannon red = new Cannon(gc, 100, 0, new Image("gun_1.png"));
+        final Cannon red = new Cannon(gc, 1000, 0, new Image("gun_1.png"));
         red.setY(map.GroundY(red.getX()));
 
-        final Cannon blue = new Cannon(gc, 1000, 0, new Image("gun_2.png"));
+        final Cannon blue = new Cannon(gc, 100, 0, new Image("gun_2.png"));
         blue.setY(map.GroundY(blue.getX()));
 
         final LinkedList<Bullet> bullets = new LinkedList<>();
@@ -118,7 +118,7 @@ public class Game extends Application {
                 if (keys.contains("ENTER")) {
                     if(faire || wait <= 0) {
                         faire = false;
-                        bullets.add(red.fireBig());
+                        bullets.add(red.fireSmall());
                         //int info = converter.getInfo(red.getX(),red.getFi(),2);
                         //info = (network.synchronization(info));
                         //converter.ConvertInfo(info, map);
@@ -129,10 +129,42 @@ public class Game extends Application {
                     }
                 }
 
+                if (keys.contains("A")) {
+                    blue.setX(blue.getX() - 1);
+                    blue.setY(map.GroundY(blue.getX()));
+                }
+
+                if (keys.contains("D")) {
+                    blue.setX(blue.getX() + 1);
+                    blue.setY(map.GroundY(blue.getX()));
+                }
+
+                if (keys.contains("W")) {
+                    blue.angleLeft();
+                }
+
+                if (keys.contains("S")) {
+                    blue.angleRight();
+                }
                 if (keys.contains("SPACE")) {
                     if(faire || wait <= 0) {
                         faire = false;
-                        bullets.add(red.fireSmall());
+                        bullets.add(blue.fireSmall());
+                        //int info = converter.getInfo(red.getX(), red.getFi(), 1);
+                        //info = (network.synchronization(info));
+                        //converter.ConvertInfo(info, map);
+                        //converter.setCannon(blue);
+                        //bullets.add(converter.getBullet(gc));
+                       // wait = CHECK_UPDATES;
+                        keys.remove("SPACE");
+                    }
+                }
+
+
+                if (keys.contains("SPACE")) {
+                    if(faire || wait <= 0) {
+                        faire = false;
+                        bullets.add(red.fireBig());
                         //int info = converter.getInfo(red.getX(), red.getFi(), 1);
                         //info = (network.synchronization(info));
                         //converter.ConvertInfo(info, map);
