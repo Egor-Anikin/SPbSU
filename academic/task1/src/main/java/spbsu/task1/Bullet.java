@@ -7,9 +7,9 @@ public abstract class Bullet implements Coordinates{
     protected static final int MAX_WIDTH = 1360;
     protected static final int MAX_HEIGHT = 765;
     protected static int BULLET_SIZE = 20;
-    protected static final int FORCE_CANNON = 100;
-    protected static int MASS_BULLET = 80;
-    protected static final float GRAVITATION = 10;
+    protected static final double FORCE_CANNON = 1000;
+    protected static int MASS_BULLET = 50;
+    protected static final double GRAVITATION = 0.08 ;
 
     protected GraphicsContext gc;
     protected Image bullet;
@@ -29,7 +29,7 @@ public abstract class Bullet implements Coordinates{
     }*/
 
     protected void begin(int fi) {
-        int v0 = FORCE_CANNON/MASS_BULLET;
+        double v0 = FORCE_CANNON/MASS_BULLET;
         vx = v0 * Math.cos(Math.PI * fi / 180);
         vy = v0 * Math.sin(Math.PI * fi / 180);
     }
@@ -64,7 +64,7 @@ public abstract class Bullet implements Coordinates{
 
         x += vx;
         vy -= GRAVITATION;
-        y += vy;
+        y -= vy;
 
     }
 

@@ -9,7 +9,9 @@ public class Cannon implements Coordinates{
     private static final int MAX_WIDTH = 1360;
     private static final int CANNON_X_SIZE = 150;
     private static final int CANNON_Y_SIZE = 70;
-    private static final int MUZZEL_SIZE = 40;
+    private static final int HEAD = -15;
+    private static final int HEAD_SIZE = 21;
+    private static final int MUZZEL_SIZE = 50;
     private final GraphicsContext gc;
     private final Image cannon;
 
@@ -17,13 +19,13 @@ public class Cannon implements Coordinates{
     private int y;
     private int fi;
 
-    public Cannon(GraphicsContext gc, int x, int y) {
+    public Cannon(GraphicsContext gc, int x, int y, Image cannon) {
         this.gc = gc;
         this.x = x;
         this.y = y;
         this.fi = 90;
 
-        cannon = new Image("gun_1.png");
+        this.cannon = cannon;
     }
 
     public void angleLeft() {
@@ -41,16 +43,22 @@ public class Cannon implements Coordinates{
     }
     /** Draw Turret. */
     public void draw() {
-        gc.setLineWidth(5);// Дудо с заданным углом
-        gc.setStroke(Color.rgb(195, 195, 195));
-        //gc.strokeLine(x, y, x + Math.sin(Math.PI * fi / 180) * MUZZEL_SIZE, y + Math.cos(Math.PI * fi / 180) * MUZZEL_SIZE);
-
         gc.drawImage(cannon, x - CANNON_X_SIZE / 2, y - CANNON_Y_SIZE / 2);
+
+        gc.setLineWidth(5);// Дудо с заданным углом
+        gc.setStroke(Color.rgb(0, 0, 0));
+        gc.strokeLine(x+ Math.cos(Math.PI * fi / 180) * HEAD_SIZE, y + HEAD - Math.sin(Math.PI * fi / 180) * HEAD_SIZE,
+                x + Math.cos(Math.PI * fi / 180) * MUZZEL_SIZE, y + HEAD - Math.sin(Math.PI * fi / 180) * MUZZEL_SIZE);
     }
 
     public Bullet fireBig(){
-        return new BulletBig(gc,x + (int)Math.cos(Math.PI * fi / 180) * MUZZEL_SIZE,
-                y +(int)Math.sin(Math.PI * fi / 180) * MUZZEL_SIZE, fi);
+        return new BulletBig(gc, x + (int)(Math.cos(Math.PI * fi / 180) * (MUZZEL_SIZE + 20)),
+                y + HEAD - (int)(Math.sin(Math.PI * fi / 180) * (MUZZEL_SIZE + 20)), fi);
+    }
+
+    public Bullet fireSmall(){
+        return new BulletSmall(gc, x + (int)(Math.cos(Math.PI * fi / 180) * (MUZZEL_SIZE + 20)),
+                y + HEAD - (int)(Math.sin(Math.PI * fi / 180) * (MUZZEL_SIZE + 20)), fi);
     }
 
     public int getFi() {

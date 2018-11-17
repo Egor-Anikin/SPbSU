@@ -24,8 +24,13 @@ public class Map {
         int[] X = {0, 205, 405, 700, 830, 990, 1260, 1360};
         int[] Y = {412, 480, 380, 490, 445, 480, 395, 415};
 
-        for(int i = 0; i < 8; i++) {
-            if (x < X[i])
+        if(x <= 0){
+            return 0;
+
+        }
+
+        for(int i = 1; i < 8; i++) {
+            if (x <= X[i])
                 return Y[i - 1] + (Y[i] - Y[i - 1]) * (x - X[i - 1]) / (X[i] - X[i - 1]);
         }
 

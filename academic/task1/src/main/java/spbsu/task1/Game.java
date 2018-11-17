@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
@@ -81,15 +82,20 @@ public class Game extends Application {
 
     private void gameMechanics(final Stage primaryStage, GraphicsContext gc, final LinkedList<String> keys) {
         final Map map = new Map(gc);
-        final Cannon red = new Cannon(gc, 680, 0);
+        final Cannon red = new Cannon(gc, 100, 0, new Image("gun_1.png"));
         red.setY(map.GroundY(red.getX()));
-        final Cannon blue = new Cannon(gc, 680, 0);
+
+        final Cannon blue = new Cannon(gc, 1000, 0, new Image("gun_2.png"));
         blue.setY(map.GroundY(blue.getX()));
-        //map.putOnTheGround(turret);
+
         final LinkedList<Bullet> bullets = new LinkedList<>();
 
+
         new AnimationTimer() {
+
             public void handle(long currentNanoTime) {
+
+
 
                 if (keys.contains("LEFT")) {
                     red.setX(red.getX() - 1);
@@ -116,62 +122,63 @@ public class Game extends Application {
                         //int info = converter.getInfo(red.getX(),red.getFi(),2);
                         //info = (network.synchronization(info));
                         //converter.ConvertInfo(info, map);
-                        converter.setCannon(blue);
-                        bullets.add(converter.getBullet(gc));
-                        wait = CHECK_UPDATES;
+                        //converter.setCannon(blue);
+                        //bullets.add(converter.getBullet(gc));
+                        //wait = CHECK_UPDATES;
                         keys.remove("ENTER");
                     }
                 }
 
-                if (keys.contains("SPASE")) {
+                if (keys.contains("SPACE")) {
                     if(faire || wait <= 0) {
                         faire = false;
-                        //bullets.add(red.fireSmall());
+                        bullets.add(red.fireSmall());
                         //int info = converter.getInfo(red.getX(), red.getFi(), 1);
                         //info = (network.synchronization(info));
                         //converter.ConvertInfo(info, map);
-                        converter.setCannon(blue);
-                        bullets.add(converter.getBullet(gc));
-                        wait = CHECK_UPDATES;
-                        keys.remove("SPASE");
+                        //converter.setCannon(blue);
+                        //bullets.add(converter.getBullet(gc));
+                       // wait = CHECK_UPDATES;
+                        keys.remove("SPACE");
                     }
                 }
 
                 if (keys.contains("ESCAPE")) {
                     primaryStage.close();
                 }
-
                 map.draw();
                 red.draw();
+                blue.draw();
+
 
                 for (Bullet bullet : bullets) {
-                    if (bullet.getY() <= map.GroundY(bullet.getX()) || bullet.isRemuv()) {
+                    if (bullet.getY() >= map.GroundY(bullet.getX()) || bullet.isRemuv()) {
                         bullets.remove(bullet);
-                    } else if (checkHit(bullet,red)) {
+                    }else if (checkHit(bullet,red)) {
                         primaryStage.close();
                         System.out.println("Blue win");
                     }  else if (checkHit(bullet,blue)) {
                         primaryStage.close();
-                        System.out.println("Red win");
+                       System.out.println("Yellow win");
                     } else {
-                        bullet.draw();
+                      bullet.draw();
                     }
                 }
 
-                if (wait == 0) {
+                /*if (wait == 0) {
                     //int info = converter.getInfo(red.getX(),red.getFi(),0);
                     //info = (network.synchronization(info));
                    // converter.ConvertInfo(info, map);
                     converter.setCannon(blue);
                     wait = CHECK_UPDATES;
                 }
-                wait--;
+                wait--;*/
             }
         }.start();
     }
 
     private boolean checkHit(Bullet bullet, Cannon red)
     {
-        return Math.sqrt(Math.pow(bullet.getX() - red.getX(),2) + Math.pow(bullet.getY() - red.getY(),2)) <= 20;
+        return Math.sqrt(Math.pow(bullet.getX() - red.getX(),2) + Math.pow(bullet.getY() - red.getY(),2)) <= 30;
     }
 }

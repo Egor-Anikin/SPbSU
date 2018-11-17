@@ -10,9 +10,9 @@ public class Converter {
     private int type;
 
     public void ConvertInfo(int info, Map map ) {
-        x = info & (~2047) >> 11;
-        fi = (info & 2044) >> 2;
-        type = info & 3;
+        x = (info >> 11) & 0b1111111111111 >> 11;
+        fi = (info >> 2) & 0b111111111;
+        type = info & 0b11;
         y = map.GroundY(x);
     }
 
@@ -30,6 +30,6 @@ public class Converter {
     }
 
     public int getInfo(int x, int fi, int type) {
-        return type + (fi << 2) + (x << 11);
+        return (type & 0b11) | ((fi & 0b11111111)  << 2)  | ((x & 0b1111111111111) << 11);
     }
 }
