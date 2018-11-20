@@ -24,9 +24,14 @@ public class Game extends Application {
 
     private static final int CHECK_UPDATES = 10;
 
-    private Converter converter = new Converter();
-    private int wait = 0;
+    private int time = CHECK_UPDATES;
+    private int time0 = 0;
+    private int x0 = 0;
+    private int fi0 = 0;
+    private int type = 0;
     private boolean faire = true;
+
+    private Network network = new Network();
 
     /** Start The Game. */
     @Override
@@ -82,10 +87,10 @@ public class Game extends Application {
 
     private void gameMechanics(final Stage primaryStage, GraphicsContext gc, final LinkedList<String> keys) {
         final Map map = new Map(gc);
-        final Cannon red = new Cannon(gc, 1000, 0, new Image("gun_1.png"));
+        final Cannon red = new Cannon(gc, 1000, 0, new Image("gun12.png"));
         red.setY(map.GroundY(red.getX()));
 
-        final Cannon blue = new Cannon(gc, 100, 0, new Image("gun_2.png"));
+        final Cannon blue = new Cannon(gc, 100, 0, new Image("gun22.png"));
         blue.setY(map.GroundY(blue.getX()));
 
         final LinkedList<Bullet> bullets = new LinkedList<>();
@@ -95,7 +100,7 @@ public class Game extends Application {
 
             public void handle(long currentNanoTime) {
 
-
+                type = 0;
 
                 if (keys.contains("LEFT")) {
                     red.setX(red.getX() - 1);
@@ -116,8 +121,12 @@ public class Game extends Application {
                 }
 
                 if (keys.contains("ENTER")) {
-                    if(faire || wait <= 0) {
+                    if(faire) {
                         faire = false;
+                        type = 1;
+                        x0 = red.getX();
+                        fi0 = red.getFi();
+                        time0 = time;
                         bullets.add(red.fireSmall());
                         //int info = converter.getInfo(red.getX(),red.getFi(),2);
                         //info = (network.synchronization(info));
@@ -129,48 +138,16 @@ public class Game extends Application {
                     }
                 }
 
-                if (keys.contains("A")) {
-                    blue.setX(blue.getX() - 1);
-                    blue.setY(map.GroundY(blue.getX()));
-                }
-
-                if (keys.contains("D")) {
-                    blue.setX(blue.getX() + 1);
-                    blue.setY(map.GroundY(blue.getX()));
-                }
-
-                if (keys.contains("W")) {
-                    blue.angleLeft();
-                }
-
-                if (keys.contains("S")) {
-                    blue.angleRight();
-                }
                 if (keys.contains("SPACE")) {
-                    if(faire || wait <= 0) {
+                    if(faire) {
                         faire = false;
-                        bullets.add(blue.fireSmall());
-                        //int info = converter.getInfo(red.getX(), red.getFi(), 1);
-                        //info = (network.synchronization(info));
-                        //converter.ConvertInfo(info, map);
-                        //converter.setCannon(blue);
-                        //bullets.add(converter.getBullet(gc));
-                       // wait = CHECK_UPDATES;
-                        keys.remove("SPACE");
-                    }
-                }
-
-
-                if (keys.contains("SPACE")) {
-                    if(faire || wait <= 0) {
                         faire = false;
-                        bullets.add(red.fireBig());
-                        //int info = converter.getInfo(red.getX(), red.getFi(), 1);
-                        //info = (network.synchronization(info));
-                        //converter.ConvertInfo(info, map);
-                        //converter.setCannon(blue);
-                        //bullets.add(converter.getBullet(gc));
-                       // wait = CHECK_UPDATES;
+                        type = 1;
+                        x0 = red.getX();
+                        fi0 = red.getFi();
+                        time0 = time;
+                        bullets.add(blue.fireBig());
+
                         keys.remove("SPACE");
                     }
                 }
@@ -197,20 +174,28 @@ public class Game extends Application {
                     }
                 }
 
-                /*if (wait == 0) {
-                    //int info = converter.getInfo(red.getX(),red.getFi(),0);
-                    //info = (network.synchronization(info));
-                   // converter.ConvertInfo(info, map);
-                    converter.setCannon(blue);
-                    wait = CHECK_UPDATES;
+                if (time == CHECK_UPDATES) {
+                    long info = Converter.getInfo(red.getX(), red.getFi(), type, x0 - red.getX(), fi0 -red.getFi(),time - time0 );
+                    info = network.synchronization(info);
+                    Converter.setCannon(blue, info);
+                    bullets.add(Converter.getBullet(gc,info));
+                    time = 0;
+                    faire = true;
                 }
-                wait--;*/
+                else {
+                    time++;
+                }
+
             }
         }.start();
     }
 
     private boolean checkHit(Bullet bullet, Cannon red)
     {
-        return Math.sqrt(Math.pow(bullet.getX() - red.getX(),2) + Math.pow(bullet.getY() - red.getY(),2)) <= 30;
+        if(bullet instanceof BulletBig) {
+            return Math.sqrt(Math.pow(bullet.getX() - red.getX(), 2) + Math.pow(bullet.getY() - red.getY(), 2)) <= 40;
+        } else {
+            return Math.sqrt(Math.pow(bullet.getX() - red.getX(), 2) + Math.pow(bullet.getY() - red.getY(), 2)) <= 30;
+        }
     }
 }

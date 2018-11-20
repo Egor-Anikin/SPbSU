@@ -20,7 +20,7 @@ public class Map {
         gc.drawImage(background, 0, 0);
     }
 
-    public int GroundY(int x){
+    public static int GroundY(int x){
         int[] X = {0, 205, 405, 700, 830, 990, 1260, 1360};
         int[] Y = {412, 480, 380, 490, 445, 480, 395, 415};
 

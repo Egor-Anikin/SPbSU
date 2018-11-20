@@ -55,19 +55,20 @@ public abstract class Bullet implements Coordinates{
     }
 
     public void draw() {
+        gc.drawImage(bullet, (int) x - BULLET_SIZE / 2, (int) y - BULLET_SIZE / 2);
+        next();
+    }
+
+    public void next(){
         if (x < 0 || x > MAX_WIDTH || y < 0 || y > MAX_HEIGHT ) {
             remuv();
             return;
         }
 
-        gc.drawImage(bullet, (int) x - BULLET_SIZE / 2, (int) y - BULLET_SIZE / 2);
-
         x += vx;
         vy -= GRAVITATION;
         y -= vy;
-
     }
-
     public boolean isRemuv(){
         return remuv;
     }
