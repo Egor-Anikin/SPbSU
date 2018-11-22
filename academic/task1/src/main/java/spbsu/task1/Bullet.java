@@ -3,78 +3,88 @@ package spbsu.task1;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
-public abstract class Bullet implements Coordinates{
+public abstract class Bullet implements Coordinates {
     protected static final int MAX_WIDTH = 1360;
-    protected static final int MAX_HEIGHT = 765;
     protected static int BULLET_SIZE = 20;
     protected static final double FORCE_CANNON = 1000;
     protected static int MASS_BULLET = 50;
-    protected static final double GRAVITATION = 0.08 ;
+    protected static final double GRAVITATION = 0.1;
 
     protected GraphicsContext gc;
     protected Image bullet;
 
-    protected boolean remuv = false;
-    protected double x;
-    protected double y;
-    protected double vx;
-    protected double vy;
+    private boolean remove = false;
+    private int x;
+    private int y;
+    private double vx;
+    private double vy;
 
-    /*public Bullet(GraphicsContext gc, int x, int y, int fi) {
-        this.gc = gc;
-        this.x = x;
-        this.y = y;
-
-        begin(fi);
-    }*/
 
     protected void begin(int fi) {
-        double v0 = FORCE_CANNON/MASS_BULLET;
+        double v0 = FORCE_CANNON / MASS_BULLET;
         vx = v0 * Math.cos(Math.PI * fi / 180);
         vy = v0 * Math.sin(Math.PI * fi / 180);
     }
 
+    protected void remove() {
+        remove = true;
+    }
+
+
     @Override
     public int getX() {
-        return (int) x;
+        return x;
     }
 
     @Override
     public int getY() {
-        return (int)y;
+        return y;
     }
 
     @Override
     public void setX(int x) {
-        if(x > 0 && x < MAX_WIDTH )
-            this.x = x;
+        this.x = x;
     }
+
     @Override
     public void setY(int y) {
         this.y = y;
     }
 
-    public void draw() {
-        gc.drawImage(bullet, (int) x - BULLET_SIZE / 2, (int) y - BULLET_SIZE / 2);
-        next();
+
+    public double getVx() {
+        return vx;
     }
 
-    public void next(){
-        if (x < 0 || x > MAX_WIDTH || y < 0 || y > MAX_HEIGHT ) {
-            remuv();
+    public double getVy() {
+        return vy;
+    }
+
+    public void setVy(double vy) {
+        this.vy = vy;
+    }
+
+    /** Draw bullet. */
+    public void draw() {
+        gc.drawImage(bullet, getX() - BULLET_SIZE / 2, getY() - BULLET_SIZE / 2);
+        move();
+    }
+
+    /** Move bullet. */
+    public void move() {
+        if (x < 0 || x > MAX_WIDTH) {
+            remove();
             return;
         }
 
-        x += vx;
-        vy -= GRAVITATION;
-        y -= vy;
-    }
-    public boolean isRemuv(){
-        return remuv;
+        setX(getX() + (int) getVx());
+        setVy(getVy() - GRAVITATION);
+        setY(getY() - (int) getVy());
     }
 
-    private void remuv (){
-        remuv = true;
+    /** Bullet existence. */
+    public boolean isRemove() {
+        return remove;
     }
 }
 

@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 public class Cannon implements Coordinates{
     private static final int MAX_WIDTH = 1360;
     private static final int CANNON_X_SIZE = 100;
-    private static final int CANNON_Y_SIZE = 45;//22
+    private static final int CANNON_Y_SIZE = 45;
     private static final int HEAD = -2;
     private static final int HEAD_SIZE = 15;
     private static final int MUZZEL_SIZE = 40;
@@ -30,20 +30,22 @@ public class Cannon implements Coordinates{
         this.cannon = cannon;
     }
 
+    /** Left angle. */
     public void angleLeft() {
-        if( fi == 360) {
+        if(fi == 360) {
             fi = 0;
         }
-            fi++;
+        fi++;
     }
 
+    /** Right angle. */
     public void angleRight() {
-        if( fi == 0) {
+        if(fi == 0) {
             fi = 360;
         }
         fi--;
     }
-    /** Draw Turret. */
+    /** Draw Cannon. */
     public void draw() {
         gc.drawImage(cannon, x - CANNON_X_SIZE / 2, y - CANNON_Y_SIZE / 2);
 
@@ -53,11 +55,13 @@ public class Cannon implements Coordinates{
                 x + Math.cos(Math.PI * fi / 180) * MUZZEL_SIZE, y + HEAD - Math.sin(Math.PI * fi / 180) * MUZZEL_SIZE);
     }
 
+    /** Big bullet fire. */
     public Bullet fireBig(){
         return new BulletBig(gc, x + (int)(Math.cos(Math.PI * fi / 180) * (MUZZEL_SIZE + DISTANS)),
                 y + HEAD - (int)(Math.sin(Math.PI * fi / 180) * (MUZZEL_SIZE + DISTANS)), fi);
     }
 
+    /** Small bullet fire. */
     public Bullet fireSmall(){
         return new BulletSmall(gc, x + (int)(Math.cos(Math.PI * fi / 180) * (MUZZEL_SIZE + DISTANS)),
                 y + HEAD - (int)(Math.sin(Math.PI * fi / 180) * (MUZZEL_SIZE + DISTANS)), fi);
@@ -84,7 +88,7 @@ public class Cannon implements Coordinates{
     @Override
     public void setX(int x) {
         if(x > 0 && x < MAX_WIDTH)
-        this.x = x;
+            this.x = x;
     }
     @Override
     public void setY(int y) {

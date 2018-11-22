@@ -31,7 +31,7 @@ public class Game extends Application {
     private int type = 0;
     private boolean faire = true;
 
-    private Network network = new Network();
+  //  private Network network = new Network();
 
     /** Start The Game. */
     @Override
@@ -42,7 +42,7 @@ public class Game extends Application {
 
         Group root = new Group();
         Scene scene = new Scene(root);
-        primaryStage.setScene(scene);// Заклинание
+        primaryStage.setScene(scene);
         LinkedList<String> keys = keyboardSettings(scene);
 
         Canvas canvas = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -60,7 +60,7 @@ public class Game extends Application {
         launch(args);
     }
 
-    private LinkedList<String> keyboardSettings(Scene scene) {  // Важные заклинание ничего не менять
+    private LinkedList<String> keyboardSettings(Scene scene) {
         LinkedList<String> input = new LinkedList<>();
 
         scene.setOnKeyPressed(
@@ -87,10 +87,18 @@ public class Game extends Application {
 
     private void gameMechanics(final Stage primaryStage, GraphicsContext gc, final LinkedList<String> keys) {
         final Map map = new Map(gc);
-        final Cannon red = new Cannon(gc, 1000, 0, new Image("gun12.png"));
-        red.setY(map.GroundY(red.getX()));
 
-        final Cannon blue = new Cannon(gc, 100, 0, new Image("gun22.png"));
+        final Cannon red;
+        final Cannon blue;
+        //if(network.isServer()) {
+            red = new Cannon(gc, 1300, 0, new Image("gun_1.2.png"));
+            blue = new Cannon(gc, 400, 0, new Image("gun_2.2.png"));
+        //} else {
+        //    blue = new Cannon(gc, 1000, 0, new Image("gun12.png"));
+        //    red = new Cannon(gc, 100, 0, new Image("gun22.png"));
+        //}
+
+        red.setY(map.GroundY(red.getX()));
         blue.setY(map.GroundY(blue.getX()));
 
         final LinkedList<Bullet> bullets = new LinkedList<>();
@@ -128,19 +136,43 @@ public class Game extends Application {
                         fi0 = red.getFi();
                         time0 = time;
                         bullets.add(red.fireSmall());
-                        //int info = converter.getInfo(red.getX(),red.getFi(),2);
-                        //info = (network.synchronization(info));
-                        //converter.ConvertInfo(info, map);
-                        //converter.setCannon(blue);
-                        //bullets.add(converter.getBullet(gc));
-                        //wait = CHECK_UPDATES;
                         keys.remove("ENTER");
                     }
+                }
+
+                if (keys.contains("M")) {
+                    bullets.add(red.fireBig());
+                    keys.remove("M");
+                }
+
+                if (keys.contains("A")) {
+                    blue.setX(blue.getX() - 1);
+                    blue.setY(map.GroundY(blue.getX()));
+                }
+
+                if (keys.contains("D")) {
+                    blue.setX(blue.getX() + 1);
+                    blue.setY(map.GroundY(blue.getX()));
+                }
+
+                if (keys.contains("W")) {
+                    blue.angleLeft();
+                }
+
+                if (keys.contains("S")) {
+                    blue.angleRight();
                 }
 
                 if (keys.contains("SPACE")) {
                     if(faire) {
                         faire = false;
+                        bullets.add(blue.fireSmall());
+                        keys.remove("SPACE");
+                    }
+                }
+
+                if (keys.contains("SPACE")) {
+                    if(faire) {
                         faire = false;
                         type = 1;
                         x0 = red.getX();
@@ -161,24 +193,24 @@ public class Game extends Application {
 
 
                 for (Bullet bullet : bullets) {
-                    if (bullet.getY() >= map.GroundY(bullet.getX()) || bullet.isRemuv()) {
+                    if (bullet.getY() >= map.GroundY(bullet.getX()) || bullet.isRemove()) {
                         bullets.remove(bullet);
                     }else if (checkHit(bullet,red)) {
                         primaryStage.close();
                         System.out.println("Blue win");
                     }  else if (checkHit(bullet,blue)) {
                         primaryStage.close();
-                       System.out.println("Yellow win");
+                       System.out.println("Red win");
                     } else {
                       bullet.draw();
                     }
                 }
 
                 if (time == CHECK_UPDATES) {
-                    long info = Converter.getInfo(red.getX(), red.getFi(), type, x0 - red.getX(), fi0 -red.getFi(),time - time0 );
-                    info = network.synchronization(info);
-                    Converter.setCannon(blue, info);
-                    bullets.add(Converter.getBullet(gc,info));
+                    //long info = Converter.getInfo(red.getX(), red.getFi(), type, x0 - red.getX(), fi0 -red.getFi(),time - time0 );
+                    //info = network.synchronization(info);
+                    //Converter.setCannon(blue, info);
+                    //bullets.add(Converter.getBullet(gc,info));
                     time = 0;
                     faire = true;
                 }

@@ -14,7 +14,7 @@ public class Converter {
     }
 
     public static Bullet getBullet(GraphicsContext gc, long info) {
-        if( getType(info) == 0 ) {
+        if (getType(info) == 0) {
             return null;
         } else {
 
@@ -31,49 +31,12 @@ public class Converter {
 
             for(int i = 0; i < getTime(info); i++);
             {
-                bullet.next();
+                bullet.move();
             }
 
             return bullet;
         }
     }
-
-    public static int getType(long info ) {
-        return codoff(info, 2, 0);
-    }
-
-    public static int getFi(long info){
-        return codoff(info, 9, 2);
-    }
-
-    public static int getX(long info){
-        return codoff(info, 11, 11);
-    }
-
-    public static int getX0(long info ){
-        int dx =  codoff(info, 5, 22);
-
-        if(dx > 10) {
-            dx = -(dx - 10);
-        }
-
-        return getX(info) + dx;
-    }
-
-    public static int getFi0(long info ){
-        int dfi = codoff(info, 5, 27);
-
-        if(dfi > 10) {
-            dfi = -(dfi - 10);
-        }
-
-        return getFi(info) + dfi;
-    }
-
-    public static int getTime(long info ){
-        return codoff(info, 4, 32);
-    }
-
 
     public static long getInfo(int x, int fi, int type, int dx, int dfi, int time) {
         int n = 0;
@@ -104,12 +67,47 @@ public class Converter {
         return  info;
     }
 
-    private static int codoff (long info, int symbol, int order) {
-        return (int)((info >> order) & (int)Math.pow(2,symbol) - 1);
+    private static int getType(long info ) {
+        return codoff(info, 2, 0);
     }
 
-    private static int codon (int x, int symbol, int order)
-    {
-        return (x & (int)Math.pow(2,symbol) - 1) >> order;
+    private static int getFi(long info){
+        return codoff(info, 9, 2);
+    }
+
+    private static int getX(long info){
+        return codoff(info, 11, 11);
+    }
+
+    private static int getX0(long info ){
+        int dx =  codoff(info, 5, 22);
+
+        if(dx > 10) {
+            dx = -(dx - 10);
+        }
+
+        return getX(info) + dx;
+    }
+
+    private static int getFi0(long info ){
+        int dfi = codoff(info, 5, 27);
+
+        if(dfi > 10) {
+            dfi = -(dfi - 10);
+        }
+
+        return getFi(info) + dfi;
+    }
+
+    private static int getTime(long info ){
+        return codoff(info, 4, 32);
+    }
+
+    private static int codoff (long info, int symbol, int order) {
+        return (int)((info >> order) & (int)Math.pow(2, symbol) - 1);
+    }
+
+    private static int codon (int x, int symbol, int order) {
+        return (x & (int)Math.pow(2, symbol) - 1) >> order;
     }
 }

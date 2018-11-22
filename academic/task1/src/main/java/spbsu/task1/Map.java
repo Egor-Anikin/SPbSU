@@ -9,7 +9,6 @@ public class Map {
     private final GraphicsContext gc;
     private final Image background;
 
-    /** Create Map. */
     public Map(GraphicsContext gc) {
         this.gc = gc;
         background = new Image("background.png");
@@ -20,11 +19,12 @@ public class Map {
         gc.drawImage(background, 0, 0);
     }
 
-    public static int GroundY(int x){
+    /** Y coordinate of the earth. */
+    public static int GroundY(int x) {
         int[] X = {0, 205, 405, 700, 830, 990, 1260, 1360};
         int[] Y = {412, 480, 380, 490, 445, 480, 395, 415};
 
-        if(x <= 0){
+        if (x <= 0) {
             return 0;
 
         }
@@ -36,6 +36,5 @@ public class Map {
 
         return 0;
     }
-
 }
 
