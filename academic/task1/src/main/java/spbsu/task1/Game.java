@@ -31,7 +31,7 @@ public class Game extends Application {
     private int type = 0;
     private boolean faire = true;
 
-  //  private Network network = new Network();
+    private Network network = new Network();
 
     /** Start The Game. */
     @Override
@@ -90,13 +90,13 @@ public class Game extends Application {
 
         final Cannon red;
         final Cannon blue;
-        //if(network.isServer()) {
-            red = new Cannon(gc, 1300, 0, new Image("gun_1.2.png"));
-            blue = new Cannon(gc, 400, 0, new Image("gun_2.2.png"));
-        //} else {
-        //    blue = new Cannon(gc, 1000, 0, new Image("gun12.png"));
-        //    red = new Cannon(gc, 100, 0, new Image("gun22.png"));
-        //}
+        if(network.isServer()) {
+            red = new Cannon(gc, 1000, 0, new Image("gun_1.2.png"));
+            blue = new Cannon(gc, 100, 0, new Image("gun_2.2.png"));
+        } else {
+            blue = new Cannon(gc, 1000, 0, new Image("gun_1.2.png"));
+           red = new Cannon(gc, 100, 0, new Image("gun_2.2.png"));
+        }
 
         red.setY(map.GroundY(red.getX()));
         blue.setY(map.GroundY(blue.getX()));
@@ -140,7 +140,7 @@ public class Game extends Application {
                     }
                 }
 
-                if (keys.contains("M")) {
+                /*if (keys.contains("M")) {
                     bullets.add(red.fireBig());
                     keys.remove("M");
                 }
@@ -169,7 +169,7 @@ public class Game extends Application {
                         bullets.add(blue.fireSmall());
                         keys.remove("SPACE");
                     }
-                }
+                }*/
 
                 if (keys.contains("SPACE")) {
                     if(faire) {
@@ -207,10 +207,10 @@ public class Game extends Application {
                 }
 
                 if (time == CHECK_UPDATES) {
-                    //long info = Converter.getInfo(red.getX(), red.getFi(), type, x0 - red.getX(), fi0 -red.getFi(),time - time0 );
-                    //info = network.synchronization(info);
-                    //Converter.setCannon(blue, info);
-                    //bullets.add(Converter.getBullet(gc,info));
+                    long info = Converter.getInfo(red.getX(), red.getFi(), type, x0 - red.getX(), fi0 -red.getFi(),time - time0 );
+                    info = network.synchronization(info);
+                    Converter.setCannon(blue, info);
+                    bullets.add(Converter.getBullet(gc,info));
                     time = 0;
                     faire = true;
                 }

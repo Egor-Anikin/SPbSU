@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 /** Network class. */
 public class Network {
-    private DataInputStream input;
-    private DataOutputStream output;
+    private BufferedReader input;
+    private PrintWriter output;
     private boolean server;
 
     /** Create Network. */
@@ -41,10 +41,14 @@ public class Network {
         try {
             if (isServer()) {
                 receive = receiveData();
-                sendData(send);
+                receive = receive | (receiveData() << 32);
+                sendData((int) (send & 0b11111111111111111111111111111111));
+                sendData((int) (send >> 32));
             } else {
-                sendData(send);
+                sendData((int) (send & 0b11111111111111111111111111111111));
+                sendData((int) (send >> 32));
                 receive = receiveData();
+                receive = receive | (receiveData() << 32);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,13 +62,13 @@ public class Network {
         return server;
     }
 
-    private void sendData(long send) throws IOException {
-        output.writeLong(send);
+    private void sendData(int send) throws IOException {
+        output.write(send);
         output.flush();
     }
 
-    private long receiveData() throws IOException {
-        return input.readInt();
+    private int receiveData() throws IOException {
+        return input.read();
     }
 
     private void serverDialog(Scanner in) throws IOException {
@@ -76,8 +80,8 @@ public class Network {
         ServerSocket server = new ServerSocket(port);
         Socket client = server.accept();
 
-        input = new DataInputStream(client.getInputStream());
-        output = new DataOutputStream(client.getOutputStream());
+        input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        output = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
 
         System.out.println("Connected");
     }
@@ -90,8 +94,8 @@ public class Network {
 
         Socket server = new Socket(ip, port);
 
-        input = new DataInputStream(server.getInputStream());
-        output = new DataOutputStream(server.getOutputStream());
+        input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+        output = new PrintWriter(new OutputStreamWriter(server.getOutputStream()), true);
 
         System.out.println("Connected");
     }
