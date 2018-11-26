@@ -119,6 +119,39 @@ public class Converter {
     }
 
     private static int codon (int x, int symbol, int order) {
-        return (x & (int)Math.pow(2, symbol) - 1) >> order;
+        return (x & (int)Math.pow(2, symbol) - 1) << order;
+    }
+
+    public static void test ()
+    {
+        for (int x = 0; x < 1000; x++)
+            for (int fi = 0; x < 360; x++)
+                for (int x0 = 0; x < 20; x++)
+                    for (int fi0 = 0; x < 20; x++)
+                        for (int time = 0; x < 10; x++)
+                        {
+                            int info1 = getInfo1(x, fi);
+                            int info2 = getInfo2(1,x0,fi0,time);
+
+                            if(x != getX(info1)) {
+                                System.out.println("Not x = " + x + " get = " + getX(info1));
+                                return;
+                            }
+
+                            if(fi != getFi(info1)) {
+                                System.out.println("Not fi = " + x + " get = " + getFi(info1));
+                                return;
+                            }
+
+                            if(1 != getType(info2)) {
+                            System.out.println("Not type = " + 1 + " get = " + getType(info1));
+                            return;
+                            }
+
+                            if(x != getX0(info1, info2)) {
+                                System.out.println("Not x0 = " + x0 + " get = " + getX0(info1,info2));
+                                return;
+                            }
+                        }
     }
 }

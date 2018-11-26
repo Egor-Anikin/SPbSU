@@ -16,7 +16,7 @@ import javafx.scene.canvas.Canvas;
 import java.util.LinkedList;
 
 /** The Game class. */
-public class Game extends Application {
+public class  Game extends Application {
     private static final int WIDTH = 1360;
     private static final int HEIGHT = 765;
     private static final int SCREEN_WIDTH = (int) Screen.getPrimary().getVisualBounds().getWidth();
@@ -57,7 +57,9 @@ public class Game extends Application {
 
     /** Main function. */
     public static void main(String[] args) {
+
         launch(args);
+        //Converter.test();
     }
 
     private LinkedList<String> keyboardSettings(Scene scene) {
