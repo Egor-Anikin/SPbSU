@@ -10,9 +10,11 @@ import java.util.Scanner;
 
 /** Network class. */
 public class Network {
-    private BufferedReader input;
-    private PrintWriter output;
-    private boolean server;
+    //private BufferedReader input;
+    //private PrintWriter output;
+    private final int PORT = 35713;
+    private static boolean server;
+    private static String ip;
 
     /** Create Network. */
     public Network() {
@@ -40,11 +42,20 @@ public class Network {
 
         try {
             if (isServer()) {
-                receive = receiveData();
-                sendData(send);
+                Socket server = new Socket(ip, PORT);
+
+                receive = receiveData(server);
+                sendData(server,send);
+
+                server.close();
             } else {
-                sendData(send);
-                receive = receiveData();
+                ServerSocket server = new ServerSocket(PORT);
+                Socket client = server.accept();
+
+                sendData(client, send);
+                receive = receiveData(client);
+
+                client.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,40 +69,42 @@ public class Network {
         return server;
     }
 
-    private void sendData(int send) throws IOException {
+    private void sendData(Socket socket, int send) throws IOException {
+        PrintWriter output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
         output.write(send);
         output.flush();
     }
 
-    private int receiveData() throws IOException {
+    private int receiveData(Socket socket) throws IOException {
+        BufferedReader  input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         return input.read();
     }
 
     private void serverDialog(Scanner in) throws IOException {
-        final int port = 35713;
+        ip = getCurrentIp();
 
-        System.out.println("\nYour ip: " + getCurrentIp());
+        System.out.println("\nYour ip: " + ip);
         System.out.println("Waiting for a client...");
 
-        ServerSocket server = new ServerSocket(port);
+        ServerSocket server = new ServerSocket(PORT);
         Socket client = server.accept();
+        client.close();
 
-        input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        output = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
+        //input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        //output = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
 
         System.out.println("Connected");
     }
 
     private void clientDialog(Scanner in) throws IOException {
-        System.out.print("Enter server ip: ");
-        String ip = in.nextLine();
+        System.out.print("Enter server ip: 192.168.");
+        ip = "192.168." + in.nextLine();
 
-        final int port = 35713;
+        Socket server = new Socket(ip, PORT);
+        server.close();
 
-        Socket server = new Socket(ip, port);
-
-        input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-        output = new PrintWriter(new OutputStreamWriter(server.getOutputStream()), true);
+        //input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+        //output = new PrintWriter(new OutputStreamWriter(server.getOutputStream()), true);
 
         System.out.println("Connected");
     }
