@@ -180,7 +180,7 @@ public class  Game extends Application {
                         x0 = red.getX();
                         fi0 = red.getFi();
                         time0 = time;
-                        bullets.add(red.fireBig());
+                        bullets.add(blue.fireBig());
 
                         keys.remove("SPACE");
                     }
