@@ -79,7 +79,10 @@ public class Network {
         input = new BufferedReader(new InputStreamReader(client.getInputStream()));
         output = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
 
-        System.out.println("Connected");
+        output.write(35713);
+        output.flush();
+        if (input.read() == 35713)
+            System.out.println("Connected");
     }
 
     private void clientDialog(Scanner in) throws IOException {
@@ -93,7 +96,10 @@ public class Network {
         input = new BufferedReader(new InputStreamReader(server.getInputStream()));
         output = new PrintWriter(new OutputStreamWriter(server.getOutputStream()), true);
 
-        System.out.println("Connected");
+        if (input.read() == 35713)
+            System.out.println("Connected");
+        output.write(35713);
+        output.flush();
     }
 
     private String getCurrentIp() throws IOException {
