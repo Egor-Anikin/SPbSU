@@ -35,20 +35,16 @@ public class Network {
     }
 
     /** Synchronization data arrays. */
-    public long synchronization(long send) {
-        long receive = 0;
+    public int synchronization(int send) {
+        int receive = 0;
 
         try {
             if (isServer()) {
                 receive = receiveData();
-                receive = receive | (receiveData() << 32);
-                sendData((int) (send & 0b11111111111111111111111111111111));
-                sendData((int) (send >> 32));
+                sendData(send);
             } else {
-                sendData((int) (send & 0b11111111111111111111111111111111));
-                sendData((int) (send >> 32));
+                sendData(send);
                 receive = receiveData();
-                receive = receive | (receiveData() << 32);
             }
         } catch (Exception e) {
             e.printStackTrace();

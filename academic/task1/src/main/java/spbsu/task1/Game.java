@@ -31,7 +31,7 @@ public class Game extends Application {
     private int type = 0;
     private boolean faire = true;
 
-    private Network network = new Network();
+    private static Network network = new Network();
 
     /** Start The Game. */
     @Override
@@ -207,10 +207,12 @@ public class Game extends Application {
                 }
 
                 if (time == CHECK_UPDATES) {
-                    long info = Converter.getInfo(red.getX(), red.getFi(), type, x0 - red.getX(), fi0 -red.getFi(),time - time0 );
-                    info = network.synchronization(info);
-                    Converter.setCannon(blue, info);
-                    bullets.add(Converter.getBullet(gc,info));
+                    int info1 = Converter.getInfo1(red.getX(), red.getFi());
+                    int info2 = Converter.getInfo2(type, x0 - red.getX(), fi0 -red.getFi(),time - time0 );
+                    info1 = network.synchronization(info1);
+                    info2 = network.synchronization(info2);
+                    Converter.setCannon(blue, info1);
+                    bullets.add(Converter.getBullet(gc, info1, info2));
                     time = 0;
                     faire = true;
                 }
