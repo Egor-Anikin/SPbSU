@@ -185,21 +185,6 @@ public class  Game extends Application {
                 red.draw();
                 blue.draw();
 
-
-                for (Bullet bullet : bullets) {
-                    if (bullet.getY() >= map.GroundY(bullet.getX()) || bullet.isRemove()) {
-                        bullets.remove(bullet);
-                    }else if (checkHit(bullet,red)) {
-                        primaryStage.close();
-                        System.out.println("Blue win");
-                    }  else if (checkHit(bullet,blue)) {
-                        primaryStage.close();
-                       System.out.println("Red win");
-                    } else {
-                      bullet.draw();
-                    }
-                }
-
                 if (time == CHECK_UPDATES) {
                     //int info1 = Converter.getInfo1(red.getX(), red.getFi());
                     //int info2 = Converter.getInfo2(type, x0 - red.getX(), fi0 -red.getFi(),time - time0 );
@@ -208,9 +193,9 @@ public class  Game extends Application {
                     blue.setFi(network.synchronization(red.getFi()));
                     type = network.synchronization(type);
                     if(type == 1){
-                        blue.fireSmall();
+                        bullets.add(blue.fireSmall());
                     } else if (type == 2) {
-                        blue.fireBig();
+                        bullets.add(blue.fireSmall());
                     }
 
                     //info2 = network.synchronization(info2);
@@ -221,6 +206,20 @@ public class  Game extends Application {
                 }
                 else {
                     time++;
+                }
+
+                for (Bullet bullet : bullets) {
+                    if (bullet.getY() >= map.GroundY(bullet.getX()) || bullet.isRemove()) {
+                        bullets.remove(bullet);
+                    }else if (checkHit(bullet,red)) {
+                        primaryStage.close();
+                        System.out.println("Blue win");
+                    }  else if (checkHit(bullet,blue)) {
+                        primaryStage.close();
+                        System.out.println("Red win");
+                    } else {
+                        bullet.draw();
+                    }
                 }
 
             }
