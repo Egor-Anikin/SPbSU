@@ -22,12 +22,9 @@ public class  Game extends Application {
     private static final int SCREEN_WIDTH = (int) Screen.getPrimary().getVisualBounds().getWidth();
     private static final int SCREEN_HEIGHT = (int) Screen.getPrimary().getVisualBounds().getHeight();
 
-    private static final int CHECK_UPDATES = 10;
+    private static final int CHECK_UPDATES = 1;
 
     private int time = CHECK_UPDATES;
-    private int time0 = 0;
-    private int x0 = 0;
-    private int fi0 = 0;
     private int type = 0;
     private boolean faire = true;
 
@@ -133,10 +130,8 @@ public class  Game extends Application {
                 if (keys.contains("ENTER")) {
                     if(faire) {
                         faire = false;
-                        type = 1;
-                        x0 = red.getX();
-                        fi0 = red.getFi();
-                        time0 = time;
+                        type = 2;
+
                         bullets.add(red.fireSmall());
                         keys.remove("ENTER");
                     }
@@ -177,10 +172,7 @@ public class  Game extends Application {
                     if(faire) {
                         faire = false;
                         type = 1;
-                        x0 = red.getX();
-                        fi0 = red.getFi();
-                        time0 = time;
-                        bullets.add(blue.fireBig());
+                        bullets.add(red.fireBig());
 
                         keys.remove("SPACE");
                     }
@@ -209,12 +201,21 @@ public class  Game extends Application {
                 }
 
                 if (time == CHECK_UPDATES) {
-                    int info1 = Converter.getInfo1(red.getX(), red.getFi());
-                    int info2 = Converter.getInfo2(type, x0 - red.getX(), fi0 -red.getFi(),time - time0 );
-                    info1 = network.synchronization(info1);
-                    info2 = network.synchronization(info2);
-                    Converter.setCannon(blue, info1);
-                    bullets.add(Converter.getBullet(gc, info1, info2));
+                    //int info1 = Converter.getInfo1(red.getX(), red.getFi());
+                    //int info2 = Converter.getInfo2(type, x0 - red.getX(), fi0 -red.getFi(),time - time0 );
+                    blue.setX( network.synchronization(red.getX()));
+                    blue.setY(map.GroundY(blue.getX()));
+                    blue.setFi(network.synchronization(red.getFi()));
+                    type = network.synchronization(type);
+                    if(type == 1){
+                        blue.fireSmall();
+                    } else if (type == 2) {
+                        blue.fireBig();
+                    }
+
+                    //info2 = network.synchronization(info2);
+                    //Converter.setCannon(blue, info1);
+                    //bullets.add(Converter.getBullet(gc, info1, info2));
                     time = 0;
                     faire = true;
                 }
