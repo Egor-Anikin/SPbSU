@@ -4,7 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class BulletBig extends Bullet {
-
     public BulletBig(GraphicsContext gc, int x, int y, int fi) {
         this.gc = gc;
         setX(x);

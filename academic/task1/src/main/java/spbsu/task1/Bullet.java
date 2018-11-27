@@ -5,9 +5,9 @@ import javafx.scene.image.Image;
 
 public abstract class Bullet implements Coordinates {
     protected static final int MAX_WIDTH = 1360;
-    protected static int BULLET_SIZE = 20;
+    protected static int BULLET_SIZE;
     protected static final double FORCE_CANNON = 1000;
-    protected static int MASS_BULLET = 50;
+    protected static int MASS_BULLET;
     protected static final double GRAVITATION = 0.1;
 
     protected GraphicsContext gc;
@@ -18,18 +18,6 @@ public abstract class Bullet implements Coordinates {
     private int y;
     private double vx;
     private double vy;
-
-
-    protected void begin(int fi) {
-        double v0 = FORCE_CANNON / MASS_BULLET;
-        vx = v0 * Math.cos(Math.PI * fi / 180);
-        vy = v0 * Math.sin(Math.PI * fi / 180);
-    }
-
-    protected void remove() {
-        remove = true;
-    }
-
 
     @Override
     public int getX() {
@@ -51,27 +39,36 @@ public abstract class Bullet implements Coordinates {
         this.y = y;
     }
 
+    protected void begin(int fi) {
+        double v0 = FORCE_CANNON / MASS_BULLET;
+        vx = v0 * Math.cos(Math.PI * fi / 180);
+        vy = v0 * Math.sin(Math.PI * fi / 180);
+    }
 
-    public double getVx() {
+    protected void remove() {
+        remove = true;
+    }
+
+    protected double getVx() {
         return vx;
     }
 
-    public double getVy() {
+    protected double getVy() {
         return vy;
     }
 
-    public void setVy(double vy) {
+    protected void setVy(double vy) {
         this.vy = vy;
     }
 
     /** Draw bullet. */
-    public void draw() {
+    protected void draw() {
         gc.drawImage(bullet, getX() - BULLET_SIZE / 2, getY() - BULLET_SIZE / 2);
         move();
     }
 
     /** Move bullet. */
-    public void move() {
+    protected void move() {
         if (x < 0 || x > MAX_WIDTH || y < Map.GroundY(x)) {
             remove();
             return;
@@ -83,7 +80,7 @@ public abstract class Bullet implements Coordinates {
     }
 
     /** Bullet existence. */
-    public boolean isRemove() {
+    protected boolean isRemove() {
         return remove;
     }
 }

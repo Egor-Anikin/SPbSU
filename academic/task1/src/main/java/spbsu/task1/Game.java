@@ -17,18 +17,17 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 /** The Game class. */
-public class  Game extends Application {
+public class Game extends Application {
     private static final int WIDTH = 1360;
     private static final int HEIGHT = 765;
+    private static final int CHECK_UPDATES = 0;
     private static final int SCREEN_WIDTH = (int) Screen.getPrimary().getVisualBounds().getWidth();
     private static final int SCREEN_HEIGHT = (int) Screen.getPrimary().getVisualBounds().getHeight();
 
-    private static final int CHECK_UPDATES = 0;
-
-    private int time = CHECK_UPDATES;
-    private int type = 0;
-
     private static Network network = new Network();
+
+    private static int time = CHECK_UPDATES;
+    private static int type = 0;
 
     /** Start The Game. */
     @Override
@@ -84,7 +83,6 @@ public class  Game extends Application {
 
     private void gameMechanics(final Stage primaryStage, GraphicsContext gc, final LinkedList<String> keys) throws IOException {
         final Map map = new Map(gc);
-
         final Cannon red;
         final Cannon blue;
 

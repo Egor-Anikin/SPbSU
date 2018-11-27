@@ -10,11 +10,11 @@ import java.util.Scanner;
 
 /** Network class. */
 public class Network {
-    private BufferedReader input;
-    private PrintWriter output;
     private final int PORT = 35671;
     private final int CHECK = 108481;
-    private final boolean server = true;
+    private final boolean SERVER = true;
+    private BufferedReader input;
+    private PrintWriter output;
     private Socket socket;
 
     public Network() {
@@ -52,9 +52,8 @@ public class Network {
 
     /** Check current computer type. */
     public boolean isServer() {
-        return server;
+        return SERVER;
     }
-
 
     /** Close socket. */
     public void closeSocket() throws IOException {

@@ -5,7 +5,6 @@ import javafx.scene.image.Image;
 
 /** The Map of Game. */
 public class Map {
-
     private final GraphicsContext gc;
     private final Image background;
 
@@ -26,7 +25,6 @@ public class Map {
 
         if (x <= 0) {
             return 0;
-
         }
 
         for(int i = 1; i < 8; i++) {
