@@ -72,7 +72,7 @@ public abstract class Bullet implements Coordinates {
 
     /** Move bullet. */
     public void move() {
-        if (x < 0 || x > MAX_WIDTH) {
+        if (x < 0 || x > MAX_WIDTH || y < Map.GroundY(x)) {
             remove();
             return;
         }

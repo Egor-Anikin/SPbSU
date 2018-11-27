@@ -12,21 +12,18 @@ import java.util.Scanner;
 public class Network {
     private BufferedReader input;
     private PrintWriter output;
-    private boolean server;
+    private final int PORT = 35671;
+    private final int CHECK = 108481;
+    private final boolean server = true;
+    private Socket socket;
 
-    /** Create Network. */
     public Network() {
         Scanner in = new Scanner(System.in);
 
-        System.out.print("You are server or not: ");
-        final String respond = in.nextLine();
-
         try {
-            if ((respond.charAt(0) == 'Y') || (respond.charAt(0) == 'y')) {
-                server = true;
+            if (isServer()) {
                 serverDialog(in);
             } else {
-                server = false;
                 clientDialog(in);
             }
         } catch (Exception e) {
@@ -34,16 +31,16 @@ public class Network {
         }
     }
 
-    /** Synchronization data arrays. */
-    public int synchronization(int send) {
+    /** Message information. */
+    public int message(int info) {
         int receive = 0;
 
         try {
             if (isServer()) {
                 receive = receiveData();
-                sendData(send);
+                sendData(info);
             } else {
-                sendData(send);
+                sendData(info);
                 receive = receiveData();
             }
         } catch (Exception e) {
@@ -58,6 +55,16 @@ public class Network {
         return server;
     }
 
+
+    /** Close socket. */
+    public void closeSocket() throws IOException {
+        try {
+            socket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void sendData(int send) throws IOException {
         output.write(send);
         output.flush();
@@ -68,20 +75,19 @@ public class Network {
     }
 
     private void serverDialog(Scanner in) throws IOException {
-        final int port = 35713;
 
-        System.out.println("\nYour ip: " + getCurrentIp());
+        System.out.println("\nYour ip: " + getIp());
         System.out.println("Waiting for a client...");
 
-        ServerSocket server = new ServerSocket(port);
-        Socket client = server.accept();
+        ServerSocket server = new ServerSocket(PORT);
+        socket = server.accept();
 
-        input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        output = new PrintWriter(new OutputStreamWriter(client.getOutputStream()), true);
+        input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
 
-        output.write(35713);
+        output.write(CHECK);
         output.flush();
-        if (input.read() == 35713)
+        if (input.read() == CHECK)
             System.out.println("Connected");
     }
 
@@ -89,20 +95,18 @@ public class Network {
         System.out.print("Enter server ip: ");
         String ip = in.nextLine();
 
-        final int port = 35713;
+        socket = new Socket(ip, PORT);
 
-        Socket server = new Socket(ip, port);
+        input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
 
-        input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-        output = new PrintWriter(new OutputStreamWriter(server.getOutputStream()), true);
-
-        if (input.read() == 35713)
+        if (input.read() == CHECK)
             System.out.println("Connected");
-        output.write(35713);
+        output.write(CHECK);
         output.flush();
     }
 
-    private String getCurrentIp() throws IOException {
+    private String getIp() throws IOException {
         String ip = "";
 
         Enumeration<NetworkInterface> network = NetworkInterface.getNetworkInterfaces();
