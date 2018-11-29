@@ -3,6 +3,7 @@ package spbsu.task1;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/**Big bullet class. */
 public class BulletBig extends Bullet {
     public BulletBig(GraphicsContext gc, int x, int y, int fi) {
         this.gc = gc;

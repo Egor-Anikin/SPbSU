@@ -86,12 +86,12 @@ public class Game extends Application {
         final Cannon red;
         final Cannon blue;
 
-        if(network.isServer()) {
+        if (network.isServer()) {
             red = new Cannon(gc, 1000, 0, new Image("gun_1.2.png"));
             blue = new Cannon(gc, 100, 0, new Image("gun_2.2.png"));
         } else {
             blue = new Cannon(gc, 1000, 0, new Image("gun_1.2.png"));
-           red = new Cannon(gc, 100, 0, new Image("gun_2.2.png"));
+            red = new Cannon(gc, 100, 0, new Image("gun_2.2.png"));
         }
 
         red.setY(Map.GroundY(red.getX()));
@@ -143,7 +143,7 @@ public class Game extends Application {
                 if (time == CHECK_UPDATES) {
                     blue.setX( network.message(red.getX()));
                     blue.setY(map.GroundY(blue.getX()));
-                    blue.setFi(network.message(red.getFi()));
+                    blue.setAngle(network.message(red.getAngle()));
                     type = network.message(type);
                     if(type == 1){
                         bullets.add(blue.fireSmall());
@@ -159,7 +159,7 @@ public class Game extends Application {
                 }
 
                 for (Bullet bullet : bullets) {
-                    if ( bullet.isRemove()) {
+                    if ( !bullet.exist()) {
                         bullets.remove(bullet);
                     }else if (checkHit(bullet,red)) {
                         primaryStage.close();

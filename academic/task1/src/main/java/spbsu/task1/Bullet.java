@@ -3,6 +3,7 @@ package spbsu.task1;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+/** Bullet class. */
 public abstract class Bullet implements Coordinates {
     protected static final int MAX_WIDTH = 1360;
     protected static int BULLET_SIZE;
@@ -13,7 +14,7 @@ public abstract class Bullet implements Coordinates {
     protected GraphicsContext gc;
     protected Image bullet;
 
-    private boolean remove = false;
+    private boolean exist = true;
     private int x;
     private int y;
     private double vx;
@@ -39,14 +40,26 @@ public abstract class Bullet implements Coordinates {
         this.y = y;
     }
 
-    protected void begin(int fi) {
+    /** Bullet existence. */
+    public boolean exist() {
+        return exist;
+    }
+
+
+    /** Draw bullet. */
+    public void draw() {
+        gc.drawImage(bullet, getX() - BULLET_SIZE / 2, getY() - BULLET_SIZE / 2);
+        move();
+    }
+
+    protected void begin(int angle) {
         double v0 = FORCE_CANNON / MASS_BULLET;
-        vx = v0 * Math.cos(Math.PI * fi / 180);
-        vy = v0 * Math.sin(Math.PI * fi / 180);
+        vx = v0 * Math.cos(Math.PI * angle / 180);
+        vy = v0 * Math.sin(Math.PI * angle / 180);
     }
 
     protected void remove() {
-        remove = true;
+        exist = false;
     }
 
     protected double getVx() {
@@ -61,15 +74,8 @@ public abstract class Bullet implements Coordinates {
         this.vy = vy;
     }
 
-    /** Draw bullet. */
-    protected void draw() {
-        gc.drawImage(bullet, getX() - BULLET_SIZE / 2, getY() - BULLET_SIZE / 2);
-        move();
-    }
-
-    /** Move bullet. */
     protected void move() {
-        if (x < 0 || x > MAX_WIDTH || y < Map.GroundY(x)) {
+        if (x < 0 || x > MAX_WIDTH || y >= Map.GroundY(x)) {
             remove();
             return;
         }
@@ -77,11 +83,6 @@ public abstract class Bullet implements Coordinates {
         setX(getX() + (int) getVx());
         setVy(getVy() - GRAVITATION);
         setY(getY() - (int) getVy());
-    }
-
-    /** Bullet existence. */
-    protected boolean isRemove() {
-        return remove;
     }
 }
 

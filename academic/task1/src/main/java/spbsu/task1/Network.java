@@ -12,18 +12,24 @@ import java.util.Scanner;
 public class Network {
     private final int PORT = 35671;
     private final int CHECK = 108481;
-    private final boolean SERVER = true;
+    private boolean server;
     private BufferedReader input;
     private PrintWriter output;
     private Socket socket;
 
+    /** Create Network. */
     public Network() {
         Scanner in = new Scanner(System.in);
 
+        System.out.println("Enter:\n 1 - if you are a server\n 0 - if not ");
+        final int respond = in.nextLine().charAt(0);
+
         try {
-            if (isServer()) {
+            if (respond == '1') {
+                server = true;
                 serverDialog(in);
             } else {
+                server = false;
                 clientDialog(in);
             }
         } catch (Exception e) {
@@ -52,7 +58,7 @@ public class Network {
 
     /** Check current computer type. */
     public boolean isServer() {
-        return SERVER;
+        return server;
     }
 
     /** Close socket. */
@@ -116,7 +122,7 @@ public class Network {
             while (addresses.hasMoreElements()) {
                 String temp = addresses.nextElement().getHostAddress();
 
-                if (temp.contains("192.168.")) {
+                if (!temp.contains(":") && !temp.contains("127.0.0.1")) {
                     ip = temp;
                 }
             }
@@ -125,8 +131,6 @@ public class Network {
         return ip.isEmpty() ? InetAddress.getLocalHost().getHostAddress() : ip;
     }
 }
-
-
 
 
 

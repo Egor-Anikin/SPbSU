@@ -18,62 +18,62 @@ public class Cannon implements Coordinates{
 
     private int x;
     private int y;
-    private int fi;
+    private int angle;
 
     public Cannon(GraphicsContext gc, int x, int y, Image cannon) {
         this.gc = gc;
         this.x = x;
         this.y = y;
-        this.fi = 90;
+        this.angle = 90;
 
         this.cannon = cannon;
     }
 
     /** Left angle. */
     public void angleLeft() {
-        if(fi == 360) {
-            fi = 0;
+        if (angle == 360) {
+            angle = 0;
         }
-        fi++;
+        angle++;
     }
 
     /** Right angle. */
     public void angleRight() {
-        if(fi == 0) {
-            fi = 360;
+        if (angle == 0) {
+            angle = 360;
         }
-        fi--;
+        angle--;
     }
     /** Draw Cannon. */
     public void draw() {
         gc.drawImage(cannon, x - CANNON_X_SIZE / 2, y - CANNON_Y_SIZE / 2);
 
-        gc.setLineWidth(7);
+        gc.setLineWidth(5);
         gc.setStroke(Color.rgb(0, 0, 0));
-        gc.strokeLine(x+ Math.cos(Math.PI * fi / 180) * HEAD_SIZE, y + HEAD - Math.sin(Math.PI * fi / 180) * HEAD_SIZE,
-                x + Math.cos(Math.PI * fi / 180) * MUZZLE_SIZE, y + HEAD - Math.sin(Math.PI * fi / 180) * MUZZLE_SIZE);
+        gc.strokeLine(x+ Math.cos(Math.PI * angle / 180) * HEAD_SIZE, y + HEAD - Math.sin(Math.PI * angle / 180) * HEAD_SIZE,
+                x + Math.cos(Math.PI * angle / 180) * MUZZLE_SIZE, y + HEAD - Math.sin(Math.PI * angle / 180) * MUZZLE_SIZE);
     }
 
     /** Big bullet fire. */
-    public Bullet fireBig(){
-        return new BulletBig(gc, x + (int)(Math.cos(Math.PI * fi / 180) * (MUZZLE_SIZE + DISTANCE)),
-                y + HEAD - (int)(Math.sin(Math.PI * fi / 180) * (MUZZLE_SIZE + DISTANCE)), fi);
+    public Bullet fireBig() {
+        return new BulletBig(gc, x + (int)(Math.cos(Math.PI * angle / 180) * (MUZZLE_SIZE + DISTANCE)),
+                y + HEAD - (int)(Math.sin(Math.PI * angle / 180) * (MUZZLE_SIZE + DISTANCE)), angle);
     }
 
     /** Small bullet fire. */
-    public Bullet fireSmall(){
-        return new BulletSmall(gc, x + (int)(Math.cos(Math.PI * fi / 180) * (MUZZLE_SIZE + DISTANCE)),
-                y + HEAD - (int)(Math.sin(Math.PI * fi / 180) * (MUZZLE_SIZE + DISTANCE)), fi);
+    public Bullet fireSmall() {
+        return new BulletSmall(gc, x + (int)(Math.cos(Math.PI * angle / 180) * (MUZZLE_SIZE + DISTANCE)),
+                y + HEAD - (int)(Math.sin(Math.PI * angle / 180) * (MUZZLE_SIZE + DISTANCE)), angle);
     }
 
     /** Get angle. */
-    public int getFi() {
-        return fi;
+    public int getAngle() {
+        return angle;
     }
 
     /** Set angle. */
-    public void setFi (int fi) {
-        this.fi = fi;
+    public void setAngle(int angle) {
+        this.angle = angle;
     }
 
     @Override
@@ -88,9 +88,10 @@ public class Cannon implements Coordinates{
 
     @Override
     public void setX(int x) {
-        if(x > 0 && x < MAX_WIDTH)
+        if (x > 0 && x < MAX_WIDTH)
             this.x = x;
     }
+
     @Override
     public void setY(int y) {
         this.y = y;
